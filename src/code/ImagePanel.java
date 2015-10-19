@@ -24,7 +24,7 @@ public class ImagePanel extends JPanel {
 				int w = ImagePanel.this.getWidth();
 				int h = ImagePanel.this.getHeight();
 				//image = w > 0 && h > 0 ? imageOrg.getScaledInstance(w, h,
-				//		java.awt.Image.SCALE_SMOOTH) : imageOrg;
+				///		java.awt.Image.SCALE_SMOOTH) : imageOrg;
 				ImagePanel.this.repaint();
 			}
 		});
