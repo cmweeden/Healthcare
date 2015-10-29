@@ -15,7 +15,7 @@ public class UserToDBListener implements ActionListener {
 	static JFrame _frame;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -38,7 +38,7 @@ public class UserToDBListener implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -50,12 +50,12 @@ public class UserToDBListener implements ActionListener {
 	 * @param type
 	 * @param error
 	 */
-	public UserToDBListener(JFrame f, String fn, String loc, String a,
+	public UserToDBListener(JFrame f, String login_type, String loc, String a,
 			JTextField firstname, JTextField lastname, JComboBox title,
 			JTextField username, JComboBox type, JLabel error) {
 		// Used for user insert
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_first = firstname;
 		_last = lastname;
@@ -71,19 +71,19 @@ public class UserToDBListener implements ActionListener {
 	/**
 	 * @param where
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param a
 	 * @param array
 	 * @param i
 	 * @param error
 	 */
-	public UserToDBListener(String where, JFrame f, String fn, String loc,
+	public UserToDBListener(String where, JFrame f, String login_type, String loc,
 			String a, ArrayList<String> array, int i, JLabel error) {
 		// Used for next and back when multiple patients
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		which = false;
 		_array = array;
@@ -95,7 +95,7 @@ public class UserToDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param a
 	 * @param i
@@ -106,12 +106,12 @@ public class UserToDBListener implements ActionListener {
 	 * @param type
 	 * @param error
 	 */
-	public UserToDBListener(JFrame f, String fn, String loc, String a,
+	public UserToDBListener(JFrame f, String login_type, String loc, String a,
 			JComboBox i, JTextField firstname, JTextField lastname,
 			JComboBox title, JTextField username, JComboBox type, JLabel error) {
 		// Used for view and delete from initial view selection page
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_id = i;
 		_first = firstname;
@@ -128,7 +128,7 @@ public class UserToDBListener implements ActionListener {
 	/**
 	 * @param where
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param a
 	 * @param idb
@@ -139,7 +139,7 @@ public class UserToDBListener implements ActionListener {
 	 * @param type
 	 * @param error
 	 */
-	public UserToDBListener(String where, JFrame f, String fn, String loc,
+	public UserToDBListener(String where, JFrame f, String login_type, String loc,
 			String a, JComboBox idb, JTextField firstname, JTextField lastname,
 			JComboBox title, JTextField username, JComboBox type, JLabel error) {
 		// Used for update and delete when data has been selected previously
@@ -147,7 +147,7 @@ public class UserToDBListener implements ActionListener {
 
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_first = firstname;
 		_last = lastname;
@@ -202,7 +202,7 @@ public class UserToDBListener implements ActionListener {
 					_error.setText("Unable to add user");
 				}
 
-				// UserDBScreen screen = new UserDBScreen(_frame, _fn, _loc);
+				// UserDBScreen screen = new UserDBScreen(_frame, _login_type, _loc);
 				// screen.createFrame(2);
 
 			} else if (_action.equalsIgnoreCase("update")) {
@@ -214,7 +214,7 @@ public class UserToDBListener implements ActionListener {
 				} else {
 					_error.setText("Unable to update user data");
 				}
-				// UserDBScreen screen = new UserDBScreen(_frame, _fn, _loc);
+				// UserDBScreen screen = new UserDBScreen(_frame, _login_type, _loc);
 				// screen.createFrame(1);
 
 			} else if (_action.equalsIgnoreCase("delete")) {
@@ -230,7 +230,7 @@ public class UserToDBListener implements ActionListener {
 				boolean success = db.delete(_where);
 
 				if (success) {
-					UserDBScreen screen = new UserDBScreen(_frame, _fn, _loc);
+					UserDBScreen screen = new UserDBScreen(_frame, _login_type, _loc);
 					screen.createFrame(1);
 				} else {
 					_error.setText("Unable to delete user data");
@@ -266,7 +266,7 @@ public class UserToDBListener implements ActionListener {
 						next = false;
 					}
 
-					UserDBScreen screen = new UserDBScreen(_where, _frame, _fn,
+					UserDBScreen screen = new UserDBScreen(_where, _frame, _login_type,
 							_loc, "view", id, firstname, lastname, title,
 							username, type, array, 6, next, back);
 					screen.createFrame(3);
@@ -299,7 +299,7 @@ public class UserToDBListener implements ActionListener {
 				next = false;
 			}
 
-			UserDBScreen screen = new UserDBScreen(_where, _frame, _fn, _loc,
+			UserDBScreen screen = new UserDBScreen(_where, _frame, _login_type, _loc,
 					"view", id, firstname, lastname, title, username, type,
 					_array, _i + 6, next, back);
 			screen.createFrame(3);

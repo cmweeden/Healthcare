@@ -32,7 +32,7 @@ public class UserDBScreen implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -56,14 +56,14 @@ public class UserDBScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param location
 	 *            The user log-on location (community)
 	 */
-	public UserDBScreen(JFrame f, String fn, String location) {
+	public UserDBScreen(JFrame f, String login_type, String location) {
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = location;
 		height = 40;
 		width = 160;
@@ -76,7 +76,7 @@ public class UserDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param location
 	 * @param action
 	 * @param id
@@ -86,11 +86,11 @@ public class UserDBScreen implements ActionListener {
 	 * @param username
 	 * @param type
 	 */
-	public UserDBScreen(JFrame f, String fn, String location, String action,
+	public UserDBScreen(JFrame f, String login_type, String location, String action,
 			String id, String firstname, String lastname, String title,
 			String username, String type) {
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		height = 40;
 		width = 160;
 		panely = 420;
@@ -109,7 +109,7 @@ public class UserDBScreen implements ActionListener {
 	/**
 	 * @param addWhere
 	 * @param _frame2
-	 * @param fn
+	 * @param login_type
 	 * @param location
 	 * @param action
 	 * @param id
@@ -119,13 +119,13 @@ public class UserDBScreen implements ActionListener {
 	 * @param username
 	 * @param type
 	 */
-	public UserDBScreen(String addWhere, JFrame _frame2, String fn,
+	public UserDBScreen(String addWhere, JFrame _frame2, String login_type,
 			String location, String action, String id, String firstname,
 			String lastname, String title, String username, String type) {
 
 		_where = addWhere;
 		_frame = _frame2;
-		_fn = fn;
+		_login_type = login_type;
 		_action = action;
 		_id = id;
 		_firstname = firstname;
@@ -145,7 +145,7 @@ public class UserDBScreen implements ActionListener {
 	/**
 	 * @param where
 	 * @param _frame2
-	 * @param fn
+	 * @param login_type
 	 * @param location
 	 * @param action
 	 * @param id
@@ -159,13 +159,13 @@ public class UserDBScreen implements ActionListener {
 	 * @param n
 	 * @param b
 	 */
-	public UserDBScreen(String where, JFrame _frame2, String fn,
+	public UserDBScreen(String where, JFrame _frame2, String login_type,
 			String location, String action, String id, String firstname,
 			String lastname, String title, String username, String type,
 			ArrayList<String> array, int i, boolean n, boolean b) {
 		_where = where;
 		_frame = _frame2;
-		_fn = fn;
+		_login_type = login_type;
 		_action = action;
 		_id = id;
 		_firstname = firstname;
@@ -190,7 +190,7 @@ public class UserDBScreen implements ActionListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		if (_fn.equalsIgnoreCase("Administrator")) {
+		if (_login_type.equalsIgnoreCase("Administrator")) {
 			int action;
 			if (arg0.getActionCommand().equals("View, Update, or Delete")) {
 				action = 1;
@@ -347,7 +347,7 @@ public class UserDBScreen implements ActionListener {
 
 		JButton submit = new JButton("Submit");
 		submit.setBounds(x2, y, width, height);
-		submit.addActionListener(new UserToDBListener(_frame, _fn, _loc,
+		submit.addActionListener(new UserToDBListener(_frame, _login_type, _loc,
 				"insert", nameText, lnameText, titledb, userText, idb, error));
 		_frame.getRootPane().setDefaultButton(submit);
 		_panel.add(submit);
@@ -424,14 +424,14 @@ public class UserDBScreen implements ActionListener {
 
 		JButton submit = new JButton("View");
 		submit.setBounds(x, y, width, height);
-		submit.addActionListener(new UserToDBListener(_frame, _fn, _loc,
+		submit.addActionListener(new UserToDBListener(_frame, _login_type, _loc,
 				"view", idb, nameText, lnameText, titledb, userText, tdb, error));
 
 		_panel.add(submit);
 
 		JButton submit3 = new JButton("Delete");
 		submit3.setBounds(x + 320, y, width, height);
-		submit3.addActionListener(new UserToDBListener(_frame, _fn, _loc,
+		submit3.addActionListener(new UserToDBListener(_frame, _login_type, _loc,
 				"delete", idb, nameText, lnameText, titledb, userText, tdb,
 				error));
 		_panel.add(submit3);
@@ -511,20 +511,20 @@ public class UserDBScreen implements ActionListener {
 
 		JButton submit = new JButton("Back");
 		submit.setBounds(x, y, width, height);
-		submit.addActionListener(new UserDBScreen(_frame, _fn, _loc));
+		submit.addActionListener(new UserDBScreen(_frame, _login_type, _loc));
 
 		_panel.add(submit);
 
 		JButton submit2 = new JButton("Update");
 		submit2.setBounds(x + 160, y, width, height);
-		submit2.addActionListener(new UserToDBListener(_where, _frame, _fn,
+		submit2.addActionListener(new UserToDBListener(_where, _frame, _login_type,
 				_loc, "update", idb, nameText, lnameText, titledb, userText,
 				tdb, error));
 		_panel.add(submit2);
 
 		JButton submit3 = new JButton("Delete");
 		submit3.setBounds(x + 320, y, width, height);
-		submit3.addActionListener(new UserToDBListener(_where, _frame, _fn,
+		submit3.addActionListener(new UserToDBListener(_where, _frame, _login_type,
 				_loc, "delete", idb, nameText, lnameText, titledb, userText,
 				tdb, error));
 		_panel.add(submit3);
@@ -533,7 +533,7 @@ public class UserDBScreen implements ActionListener {
 		if (_next) {
 			JButton next = new JButton("Next User");
 			next.setBounds(x2, y, width, height);
-			next.addActionListener(new UserToDBListener(_where, _frame, _fn,
+			next.addActionListener(new UserToDBListener(_where, _frame, _login_type,
 					_loc, "next", _array, _i, error));
 			_panel.add(next);
 		}
@@ -542,7 +542,7 @@ public class UserDBScreen implements ActionListener {
 			JButton back = new JButton("Previous User");
 			back.setBounds(x, y, width, height);
 			int b = _i - 12;
-			back.addActionListener(new UserToDBListener(_where, _frame, _fn,
+			back.addActionListener(new UserToDBListener(_where, _frame, _login_type,
 					_loc, "next", _array, b, error));
 			_panel.add(back);
 		}

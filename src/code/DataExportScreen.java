@@ -32,7 +32,7 @@ public class DataExportScreen implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -41,7 +41,7 @@ public class DataExportScreen implements ActionListener {
 
 	// Patient data
 	String _pid;
-	String _fname;
+	String _login_typeame;
 	String _lname;
 	String _dob;
 	String _ins;
@@ -64,17 +64,17 @@ public class DataExportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community) This is used when first
 	 *            entering the screen
 	 */
-	public DataExportScreen(JFrame f, String fn, String loc) {
+	public DataExportScreen(JFrame f, String login_type, String loc) {
 		// Used when arriving on this screen for the first time
 		// Or opening up a base screen
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		height = 40;
 		width = 160;
 		panely = 420;
@@ -89,7 +89,7 @@ public class DataExportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -101,11 +101,11 @@ public class DataExportScreen implements ActionListener {
 	 *            patient insurance This is used by researchers entering the
 	 *            screen after looking up data
 	 */
-	public DataExportScreen(JFrame f, String fn, String loc, String pid,
+	public DataExportScreen(JFrame f, String login_type, String loc, String pid,
 			String dob, String ins) {
 
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_pid = pid;
 		_loc = loc;
 		_dob = dob;
@@ -120,13 +120,13 @@ public class DataExportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 * @param pid
 	 *            patient id
-	 * @param fname
+	 * @param login_typeame
 	 *            patient first name
 	 * @param lname
 	 *            patient last name
@@ -136,11 +136,11 @@ public class DataExportScreen implements ActionListener {
 	 *            patient insurance This is used by anyone else entering the
 	 *            screen after looking up data
 	 */
-	public DataExportScreen(JFrame f, String fn, String loc, String pid,
-			String fname, String lname, String dob, String ins) {
+	public DataExportScreen(JFrame f, String login_type, String loc, String pid,
+			String login_typeame, String lname, String dob, String ins) {
 
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 
 		height = 40;
@@ -148,7 +148,7 @@ public class DataExportScreen implements ActionListener {
 		panely = 420;
 
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -160,13 +160,13 @@ public class DataExportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 * @param pid
 	 *            patient id
-	 * @param fname
+	 * @param login_typeame
 	 *            patient first name
 	 * @param lname
 	 *            patient last name
@@ -185,12 +185,12 @@ public class DataExportScreen implements ActionListener {
 	 *            is used by anyone else entering the screen after looking up
 	 *            data
 	 */
-	public DataExportScreen(JFrame f, String fn, String loc, String pid,
-			String fname, String lname, String dob, String ins,
+	public DataExportScreen(JFrame f, String login_type, String loc, String pid,
+			String login_typeame, String lname, String dob, String ins,
 			ArrayList<String> array, int i, Boolean n, Boolean b) {
 
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 
 		height = 40;
@@ -198,7 +198,7 @@ public class DataExportScreen implements ActionListener {
 		panely = 420;
 
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -213,13 +213,13 @@ public class DataExportScreen implements ActionListener {
 	 *            The search string used to find the data
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 * @param pid
 	 *            patient id
-	 * @param fname
+	 * @param login_typeame
 	 *            patient first name
 	 * @param lname
 	 *            patient last name
@@ -228,12 +228,12 @@ public class DataExportScreen implements ActionListener {
 	 * @param ins
 	 *            patient insurance
 	 */
-	public DataExportScreen(String where, JFrame f, String fn, String loc,
-			String pid, String fname, String lname, String dob, String ins) {
+	public DataExportScreen(String where, JFrame f, String login_type, String loc,
+			String pid, String login_typeame, String lname, String dob, String ins) {
 
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 
 		height = 40;
@@ -241,7 +241,7 @@ public class DataExportScreen implements ActionListener {
 		panely = 420;
 
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -254,13 +254,13 @@ public class DataExportScreen implements ActionListener {
 	 *            The search string used to find the data
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 * @param pid
 	 *            patient id
-	 * @param fname
+	 * @param login_typeame
 	 *            patient first name
 	 * @param lname
 	 *            patient last name
@@ -277,22 +277,22 @@ public class DataExportScreen implements ActionListener {
 	 * @param b
 	 *            boolean telling whether this is the first data in the set
 	 */
-	public DataExportScreen(String where, JFrame f, String fn, String loc,
-			String pid, String fname, String lname, String dob, String ins,
+	public DataExportScreen(String where, JFrame f, String login_type, String loc,
+			String pid, String login_typeame, String lname, String dob, String ins,
 			ArrayList<String> array, int i, Boolean n, Boolean b) {
 
 		// Used when multiple patient data matches for admin, physician, and
 		// insurance
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 		height = 40;
 		width = 160;
 		panely = 420;
 
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -307,7 +307,7 @@ public class DataExportScreen implements ActionListener {
 	 *            The search string used to find the data
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -326,14 +326,14 @@ public class DataExportScreen implements ActionListener {
 	 * @param b
 	 *            boolean telling whether this is the first data in the set
 	 */
-	public DataExportScreen(String where, JFrame f, String fn, String loc,
+	public DataExportScreen(String where, JFrame f, String login_type, String loc,
 			String pid, String dob, String ins, ArrayList<String> array, int i,
 			Boolean n, Boolean b) {
 
 		// Used when multiple patient data matches for researcher
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 		height = 40;
 		width = 160;
@@ -351,17 +351,17 @@ public class DataExportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 * @param tid
 	 *            The encryption id used for encryption algorithm
 	 */
-	public DataExportScreen(JFrame f, String fn, String loc, int tid) {
+	public DataExportScreen(JFrame f, String login_type, String loc, int tid) {
 		// Used when returning from an export
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		height = 40;
 		width = 160;
 		panely = 420;
@@ -442,7 +442,7 @@ public class DataExportScreen implements ActionListener {
 
 		y = y + 50;
 
-		if (!(_fn.equals("researcher"))) {
+		if (!(_login_type.equals("researcher"))) {
 			JLabel firstname = new JLabel("First Name");
 			firstname.setBounds(x, y, width, height);
 			_panel.add(firstname);
@@ -498,9 +498,9 @@ public class DataExportScreen implements ActionListener {
 		JTextField ageText = new JTextField(20);
 		JComboBox insBox = new JComboBox();
 
-		if ((!(_fn.equals("physician"))) && (!(_fn.equals("insurance")))) {
+		if ((!(_login_type.equals("physician"))) && (!(_login_type.equals("insurance")))) {
 
-			if (!(_fn.equals("researcher"))) {
+			if (!(_login_type.equals("researcher"))) {
 
 				nameText.setBounds(x2, y, width, height);
 
@@ -542,16 +542,16 @@ public class DataExportScreen implements ActionListener {
 		_panel.add(error);
 
 		JButton submit = new JButton("View");
-		if (_fn.equals("researcher")) {
+		if (_login_type.equals("researcher")) {
 
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new HIEDBListener(_frame, _fn, _loc,
+			submit.addActionListener(new HIEDBListener(_frame, _login_type, _loc,
 					"view", idb, ageText, insBox, error));
 			_panel.add(submit);
 
 		} else {
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new HIEDBListener(_frame, _fn, _loc,
+			submit.addActionListener(new HIEDBListener(_frame, _login_type, _loc,
 					"view", idb, nameText, lnameText, ageText, insBox, error));
 			_panel.add(submit);
 		}
@@ -573,9 +573,9 @@ public class DataExportScreen implements ActionListener {
 		_panel.add(pidLabel);
 
 		y = y + 50;
-		JTextField nameText = new JTextField(_fname);
+		JTextField nameText = new JTextField(_login_typeame);
 		JTextField lnameText = new JTextField(_lname);
-		if (!(_fn.equals("researcher"))) {
+		if (!(_login_type.equals("researcher"))) {
 			nameText.setBounds(x2, y, width, height);
 			nameText.setEditable(true);
 			_panel.add(nameText);
@@ -614,7 +614,7 @@ public class DataExportScreen implements ActionListener {
 		if (_next) {
 			JButton next = new JButton("Next Patient");
 			next.setBounds(x2, y, width, height);
-			next.addActionListener(new HIEDBListener(_where, _frame, _fn, _loc,
+			next.addActionListener(new HIEDBListener(_where, _frame, _login_type, _loc,
 					"next", _array, _i, error));
 			_panel.add(next);
 		}
@@ -623,7 +623,7 @@ public class DataExportScreen implements ActionListener {
 			JButton back = new JButton("Previous Patient");
 			back.setBounds(x, y, width, height);
 			int b = _i - 10;
-			back.addActionListener(new HIEDBListener(_where, _frame, _fn, _loc,
+			back.addActionListener(new HIEDBListener(_where, _frame, _login_type, _loc,
 					"next", _array, b, error));
 			_panel.add(back);
 		}
@@ -631,12 +631,12 @@ public class DataExportScreen implements ActionListener {
 
 		JButton submit = new JButton("Back");
 		submit.setBounds(x, y, width, height);
-		submit.addActionListener(new DataExportScreen(_frame, _fn, _loc));
+		submit.addActionListener(new DataExportScreen(_frame, _login_type, _loc));
 		_panel.add(submit);
 
 		JButton export = new JButton("Export Patient Data");
 		export.setBounds(x2, y, width, height);
-		export.addActionListener(new HIEDBListener(_frame, _fn, _loc, "export",
+		export.addActionListener(new HIEDBListener(_frame, _login_type, _loc, "export",
 				_pid, nameText, lnameText, ageText, insBox, error));
 		_frame.getRootPane().setDefaultButton(export);
 		_panel.add(export);
@@ -664,7 +664,7 @@ public class DataExportScreen implements ActionListener {
 
 		JButton submit = new JButton("Back");
 		submit.setBounds(x, y, width, height);
-		submit.addActionListener(new DataExportScreen(_frame, _fn, _loc));
+		submit.addActionListener(new DataExportScreen(_frame, _login_type, _loc));
 		_frame.getRootPane().setDefaultButton(submit);
 		_panel.add(submit);
 

@@ -21,13 +21,13 @@ public class PatientDBScreen implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
 
 	String _pid;
-	String _fname;
+	String _login_typeame;
 	String _lname;
 	String _dob;
 	String _ins;
@@ -44,15 +44,15 @@ public class PatientDBScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 */
-	public PatientDBScreen(JFrame f, String fn, String loc) {
+	public PatientDBScreen(JFrame f, String type, String loc) {
 		// Used for physician or insurance agent
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		height = 40;
 		width = 160;
 		_loc = loc;
@@ -64,7 +64,7 @@ public class PatientDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param array
 	 * @param i
@@ -72,11 +72,11 @@ public class PatientDBScreen implements ActionListener {
 	 * @param b
 	 * @param pol
 	 */
-	public PatientDBScreen(JFrame f, String fn, String loc,
+	public PatientDBScreen(JFrame f, String login_type, String loc,
 			ArrayList<String> array, int i, Boolean n, Boolean b, Boolean pol) {
 		// Used for physician or insurance agent coming from policy
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		height = 40;
 		width = 160;
 		_loc = loc;
@@ -90,14 +90,14 @@ public class PatientDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pol
 	 */
-	public PatientDBScreen(JFrame f, String fn, String loc, Boolean pol) {
+	public PatientDBScreen(JFrame f, String type, String loc, Boolean pol) {
 		// Used for physician or insurance agent coming from policy
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		height = 40;
 		width = 160;
 		_loc = loc;
@@ -109,7 +109,7 @@ public class PatientDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
 	 * @param first
@@ -117,18 +117,18 @@ public class PatientDBScreen implements ActionListener {
 	 * @param dob
 	 * @param ins
 	 */
-	public PatientDBScreen(JFrame f, String fn, String loc, String pid,
+	public PatientDBScreen(JFrame f, String type, String loc, String pid,
 			String first, String last, String dob, String ins) {
 		// Used for physician or insurance agent
 		height = 40;
 		width = 160;
 
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		_loc = loc;
 
 		_pid = pid;
-		_fname = first;
+		_login_typeame = first;
 		_lname = last;
 		_dob = dob;
 		_ins = ins;
@@ -140,17 +140,17 @@ public class PatientDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
 	 * @param dob
 	 * @param ins
 	 */
-	public PatientDBScreen(JFrame f, String fn, String loc, String pid,
+	public PatientDBScreen(JFrame f, String type, String loc, String pid,
 			String dob, String ins) {
 		// Used for physician or insurance agent
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		_pid = pid;
 		_loc = loc;
 		_dob = dob;
@@ -164,10 +164,10 @@ public class PatientDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
-	 * @param fname
+	 * @param login_typeame
 	 * @param lname
 	 * @param dob
 	 * @param ins
@@ -177,18 +177,18 @@ public class PatientDBScreen implements ActionListener {
 	 * @param b
 	 * @param p
 	 */
-	public PatientDBScreen(JFrame f, String fn, String loc, String pid,
-			String fname, String lname, String dob, String ins,
+	public PatientDBScreen(JFrame f, String type, String loc, String pid,
+			String login_typeame, String lname, String dob, String ins,
 			ArrayList<String> array, int i, Boolean n, Boolean b, Boolean p) {
 
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 
 		height = 40;
 		width = 160;
 		_loc = loc;
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -202,26 +202,26 @@ public class PatientDBScreen implements ActionListener {
 	/**
 	 * @param where
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
-	 * @param fname
+	 * @param login_typeame
 	 * @param lname
 	 * @param dob
 	 * @param ins
 	 */
-	public PatientDBScreen(String where, JFrame f, String fn, String loc,
-			String pid, String fname, String lname, String dob, String ins) {
+	public PatientDBScreen(String where, JFrame f, String type, String loc,
+			String pid, String login_typeame, String lname, String dob, String ins) {
 
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 
 		height = 40;
 		width = 160;
 		_loc = loc;
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -233,10 +233,10 @@ public class PatientDBScreen implements ActionListener {
 	/**
 	 * @param where
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
-	 * @param fname
+	 * @param login_typeame
 	 * @param lname
 	 * @param dob
 	 * @param ins
@@ -245,20 +245,20 @@ public class PatientDBScreen implements ActionListener {
 	 * @param n
 	 * @param b
 	 */
-	public PatientDBScreen(String where, JFrame f, String fn, String loc,
-			String pid, String fname, String lname, String dob, String ins,
+	public PatientDBScreen(String where, JFrame f, String type, String loc,
+			String pid, String login_typeame, String lname, String dob, String ins,
 			ArrayList<String> array, int i, Boolean n, Boolean b) {
 
 		// Used by admin functions
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 
 		height = 40;
 		width = 160;
 		_loc = loc;
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -272,7 +272,7 @@ public class PatientDBScreen implements ActionListener {
 	/**
 	 * @param where
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
 	 * @param dob
@@ -282,14 +282,14 @@ public class PatientDBScreen implements ActionListener {
 	 * @param n
 	 * @param b
 	 */
-	public PatientDBScreen(String where, JFrame f, String fn, String loc,
+	public PatientDBScreen(String where, JFrame f, String type, String loc,
 			String pid, String dob, String ins, ArrayList<String> array, int i,
 			Boolean n, Boolean b) {
 
 		// Used by researcher functions
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 
 		height = 40;
 		width = 160;
@@ -307,27 +307,27 @@ public class PatientDBScreen implements ActionListener {
 	/**
 	 * @param where
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param pid
-	 * @param fname
+	 * @param login_typeame
 	 * @param lname
 	 * @param dob
 	 * @param ins
 	 * @param string
 	 */
-	public PatientDBScreen(String where, JFrame f, String fn, String loc,
-			String pid, String fname, String lname, String dob, String ins,
+	public PatientDBScreen(String where, JFrame f, String type, String loc,
+			String pid, String login_typeame, String lname, String dob, String ins,
 			String string) {
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 
 		height = 40;
 		width = 160;
 
 		_pid = pid;
-		_fname = fname;
+		_login_typeame = login_typeame;
 		_lname = lname;
 		_dob = dob;
 		_ins = ins;
@@ -352,7 +352,7 @@ public class PatientDBScreen implements ActionListener {
 			action = 2;
 		} else if (arg0.getActionCommand().equals("Back")) {
 			if (_pol) {
-				PolicyDBScreen screen = new PolicyDBScreen(_frame, _fn, _loc);
+				PolicyDBScreen screen = new PolicyDBScreen(_frame, _login_type, _loc);
 				screen.createFrame(1);
 			}
 			action = 1;
@@ -385,7 +385,7 @@ public class PatientDBScreen implements ActionListener {
 		switch (action) {
 		case 1:
 			if (_pol) {
-				PolicyDBScreen screen = new PolicyDBScreen(_frame, _fn, _loc);
+				PolicyDBScreen screen = new PolicyDBScreen(_frame, _login_type, _loc);
 				screen.createFrame(1);
 
 			} else {
@@ -418,7 +418,7 @@ public class PatientDBScreen implements ActionListener {
 
 		y = y + 50;
 
-		if (!(_fn.equalsIgnoreCase("researcher"))) {
+		if (!(_login_type.equalsIgnoreCase("researcher"))) {
 			JLabel firstname = new JLabel("First Name");
 			firstname.setBounds(x, y, width, height);
 			_panel.add(firstname);
@@ -499,7 +499,7 @@ public class PatientDBScreen implements ActionListener {
 
 		JButton submit = new JButton("Submit");
 		submit.setBounds(x2, y, width, height);
-		submit.addActionListener(new PatientToDBListener(_frame, _fn, _loc,
+		submit.addActionListener(new PatientToDBListener(_frame, _login_type, _loc,
 				"insert", nameText, lnameText, ageText, insBox, error));
 		_frame.getRootPane().setDefaultButton(submit);
 		_panel.add(submit);
@@ -533,10 +533,10 @@ public class PatientDBScreen implements ActionListener {
 		JTextField ageText = new JTextField(20);
 		JComboBox insBox = new JComboBox();
 
-		// if ((!(_fn.equalsIgnoreCase("physician")))
-		// && (!(_fn.equalsIgnoreCase("insurance agent")))) {
+		// if ((!(_login_type.equalsIgnoreCase("physician")))
+		// && (!(_login_type.equalsIgnoreCase("insurance agent")))) {
 
-		if (!(_fn.equalsIgnoreCase("researcher"))) {
+		if (!(_login_type.equalsIgnoreCase("researcher"))) {
 
 			nameText.setBounds(x2, y, width, height);
 			nameText.setText("");
@@ -579,32 +579,32 @@ public class PatientDBScreen implements ActionListener {
 		error.setBounds(x2, y + 30, width * 3, height);
 		_panel.add(error);
 
-		if (_fn.equalsIgnoreCase("administrator")) {
+		if (_login_type.equalsIgnoreCase("administrator")) {
 			JButton submit = new JButton("View");
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new PatientToDBListener(_frame, _fn, _loc,
+			submit.addActionListener(new PatientToDBListener(_frame, _login_type, _loc,
 					"view", idb, nameText, lnameText, ageText, insBox, error));
 			_panel.add(submit);
 
 			JButton submit3 = new JButton("Delete");
 			submit3.setBounds(x + 320, y, width, height);
-			submit3.addActionListener(new PatientToDBListener(_frame, _fn,
+			submit3.addActionListener(new PatientToDBListener(_frame, _login_type,
 					_loc, "delete", idb, nameText, lnameText, ageText, insBox,
 					error));
 			_panel.add(submit3);
-		} else if ((_fn.equalsIgnoreCase("physician"))
-				|| (_fn.equalsIgnoreCase("insurance agent"))) {
+		} else if ((_login_type.equalsIgnoreCase("physician"))
+				|| (_login_type.equalsIgnoreCase("insurance agent"))) {
 			y = y + 200;
 			JButton submit = new JButton("View");
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new PatientToDBListener(_frame, _fn, _loc,
+			submit.addActionListener(new PatientToDBListener(_frame, _login_type, _loc,
 					"view", idb, nameText, lnameText, ageText, insBox, error));
 			_frame.getRootPane().setDefaultButton(submit);
 			_panel.add(submit);
 		} else {
 			JButton submit = new JButton("View");
 			submit.setBounds(x2, y, width, height);
-			submit.addActionListener(new PatientToDBListener(_frame, _fn, _loc,
+			submit.addActionListener(new PatientToDBListener(_frame, _login_type, _loc,
 					"view", idb, ageText, insBox, error));
 			_frame.getRootPane().setDefaultButton(submit);
 			_panel.add(submit);
@@ -626,9 +626,9 @@ public class PatientDBScreen implements ActionListener {
 		_panel.add(pidLabel);
 
 		y = y + 50;
-		JTextField nameText = new JTextField(_fname);
+		JTextField nameText = new JTextField(_login_typeame);
 		JTextField lnameText = new JTextField(_lname);
-		if (!(_fn.equalsIgnoreCase("researcher"))) {
+		if (!(_login_type.equalsIgnoreCase("researcher"))) {
 			nameText.setBounds(x2, y, width, height);
 			nameText.setEditable(true);
 
@@ -667,58 +667,58 @@ public class PatientDBScreen implements ActionListener {
 		error.setBounds(x2, y + 30, width * 3, height);
 		_panel.add(error);
 
-		if ((_fn.equalsIgnoreCase("physician"))
-				|| (_fn.equalsIgnoreCase("insurance agent"))) {
+		if ((_login_type.equalsIgnoreCase("physician"))
+				|| (_login_type.equalsIgnoreCase("insurance agent"))) {
 			JButton submit = new JButton("Back");
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new PatientDBScreen(_frame, _fn, _loc,
+			submit.addActionListener(new PatientDBScreen(_frame, _login_type, _loc,
 					_pol));
-			if (_fn.equalsIgnoreCase("insurance agent")) {
+			if (_login_type.equalsIgnoreCase("insurance agent")) {
 				_frame.getRootPane().setDefaultButton(submit);
 			}
 			_panel.add(submit);
 
-		} else if ((_fn.equalsIgnoreCase("researcher"))) {
+		} else if ((_login_type.equalsIgnoreCase("researcher"))) {
 			JButton submit = new JButton("Back");
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new PatientDBScreen(_frame, _fn, _loc,
+			submit.addActionListener(new PatientDBScreen(_frame, _login_type, _loc,
 					_pol));
 			_frame.getRootPane().setDefaultButton(submit);
 			_panel.add(submit);
 
 		}
 
-		if ((_fn.equalsIgnoreCase("physician"))) {
+		if ((_login_type.equalsIgnoreCase("physician"))) {
 			JButton submit2 = new JButton("Update");
 			submit2.setBounds(x + 160, y, width, height);
 			if (_pol) {
-				submit2.addActionListener(new PatientToDBListener(_frame, _fn,
+				submit2.addActionListener(new PatientToDBListener(_frame, _login_type,
 						_loc, "update", _pid, nameText, lnameText, ageText,
 						insBox, _array, _i, error));
 			} else {
-				submit2.addActionListener(new PatientToDBListener(_frame, _fn,
+				submit2.addActionListener(new PatientToDBListener(_frame, _login_type,
 						_loc, "update", _pid, nameText, lnameText, ageText,
 						insBox, error));
 			}
 			_panel.add(submit2);
 		} else
 
-		if (_fn.equalsIgnoreCase("administrator")) {
+		if (_login_type.equalsIgnoreCase("administrator")) {
 			JButton submit = new JButton("Back");
 			submit.setBounds(x, y, width, height);
-			submit.addActionListener(new PatientDBScreen(_frame, _fn, _loc,
+			submit.addActionListener(new PatientDBScreen(_frame, _login_type, _loc,
 					_pol));
 			_panel.add(submit);
 
 			JButton submit1 = new JButton("Update");
 			submit1.setBounds(x + 160, y, width, height);
-			submit1.addActionListener(new PatientToDBListener(_frame, _fn,
+			submit1.addActionListener(new PatientToDBListener(_frame, _login_type,
 					_loc, "update", nameText, lnameText, ageText, insBox,
 					_where, error));
 			_panel.add(submit1);
 			JButton submit2 = new JButton("Delete");
 			submit2.setBounds(x + 320, y, width, height);
-			submit2.addActionListener(new PatientToDBListener(_frame, _fn,
+			submit2.addActionListener(new PatientToDBListener(_frame, _login_type,
 					_loc, "delete", nameText, lnameText, ageText, insBox,
 					_where, error));
 			_panel.add(submit2);
@@ -729,7 +729,7 @@ public class PatientDBScreen implements ActionListener {
 		if (_next) {
 			JButton next = new JButton("Next Patient");
 			next.setBounds(x2, y, width, height);
-			next.addActionListener(new PatientToDBListener(_where, _frame, _fn,
+			next.addActionListener(new PatientToDBListener(_where, _frame, _login_type,
 					_loc, "next", _array, _i, _pol, error));
 			_panel.add(next);
 		}
@@ -738,7 +738,7 @@ public class PatientDBScreen implements ActionListener {
 			JButton back = new JButton("Previous Patient");
 			back.setBounds(x, y, width, height);
 			int b = _i - 10;
-			back.addActionListener(new PatientToDBListener(_where, _frame, _fn,
+			back.addActionListener(new PatientToDBListener(_where, _frame, _login_type,
 					_loc, "next", _array, b, _pol, error));
 			_panel.add(back);
 		}

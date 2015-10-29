@@ -23,7 +23,7 @@ public class MainScreen implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _location;
@@ -44,7 +44,7 @@ public class MainScreen implements ActionListener {
 		height = 40;
 		width = 160;
 
-		_fn = type;
+		_login_type = type;
 		_location = location;
 	}
 
@@ -110,86 +110,86 @@ public class MainScreen implements ActionListener {
 	public static JMenuBar addToPanel() {
 
 		_menuBar = new JMenuBar();
-		JMenuItem home, logout;
-
+		
 		JMenu menu = new JMenu("Menu");
 		_menuBar.add(menu);
 
+	    JMenuItem home, logout;
 		home = new JMenuItem("Home");
-		home.addActionListener(new MainScreen(_frame, _fn, _location));
+		home.addActionListener(new MainScreen(_frame, _login_type, _location));
 		menu.add(home);
 
 		logout = new JMenuItem("Logout");
 		logout.addActionListener(new LoginScreen2(_frame));
 		menu.add(logout);
+		
+		JMenu menuPatient = new JMenu("Patient");
+		_menuBar.add(menuPatient);
+		
+		JMenuItem addPatient, viewPatient, addPolicy, viewPolicy, addUser, viewUser, addExternal, viewExternal, addAbout;
+		if (_login_type.equalsIgnoreCase("administrator")) {
+			addPatient = new JMenuItem("Add");
+			addPatient.addActionListener(new PatientDBScreen(_frame, _login_type, _location));
+			menuPatient.add(addPatient);
 
-		JMenuItem addPa, viewPa, addPo, viewPo, addU, viewU, addEx, viewEx, addA;
-
-		JMenu menuPa = new JMenu("Patient");
-		_menuBar.add(menuPa);
-
-		if (_fn.equalsIgnoreCase("administrator")) {
-			addPa = new JMenuItem("Add");
-			addPa.addActionListener(new PatientDBScreen(_frame, _fn, _location));
-			menuPa.add(addPa);
-
-			viewPa = new JMenuItem("View, Update, or Delete");
-		} else if (_fn.equalsIgnoreCase("physician")) {
-			viewPa = new JMenuItem("View or Update");
+			viewPatient = new JMenuItem("View, Update, or Delete");
+		} else if (_login_type.equalsIgnoreCase("physician")) {
+			viewPatient = new JMenuItem("View or Update");
+			
 		} else {
-			viewPa = new JMenuItem("View");
+			viewPatient = new JMenuItem("View");
 		}
 
-		viewPa.addActionListener(new PatientDBScreen(_frame, _fn, _location));
-		menuPa.add(viewPa);
+		viewPatient.addActionListener(new PatientDBScreen(_frame, _login_type, _location));
+		menuPatient.add(viewPatient);
 
-		if (_fn.equalsIgnoreCase("administrator")) {
+		if (_login_type.equalsIgnoreCase("administrator")) {
 
-			JMenu menuU = new JMenu("User");
-			_menuBar.add(menuU);
+			JMenu menuUser = new JMenu("User");
+			_menuBar.add(menuUser);
 
-			addU = new JMenuItem("Add");
-			addU.addActionListener(new UserDBScreen(_frame, _fn, _location));
-			menuU.add(addU);
+			addUser = new JMenuItem("Add");
+			addUser.addActionListener(new UserDBScreen(_frame, _login_type, _location));
+			menuUser.add(addUser);
 
-			viewU = new JMenuItem("View, Update, or Delete");
-			viewU.addActionListener(new UserDBScreen(_frame, _fn, _location));
-			menuU.add(viewU);
+			viewUser = new JMenuItem("View, Update, or Delete");
+			viewUser.addActionListener(new UserDBScreen(_frame, _login_type, _location));
+			menuUser.add(viewUser);
 
 		}
 
-		JMenu menuPo = new JMenu("Policy");
-		_menuBar.add(menuPo);
+		JMenu menuPolicy = new JMenu("Policy");
+		_menuBar.add(menuPolicy);
 
-		if (_fn.equalsIgnoreCase("administrator")) {
-			addPo = new JMenuItem("Add");
-			addPo.addActionListener(new PolicyDBScreen(_frame, _fn, _location));
-			menuPo.add(addPo);
-			viewPo = new JMenuItem("View, Update, or Delete");
+		if (_login_type.equalsIgnoreCase("administrator")) {
+			addPolicy = new JMenuItem("Add");
+			addPolicy.addActionListener(new PolicyDBScreen(_frame, _login_type, _location));
+			menuPolicy.add(addPolicy);
+			viewPolicy = new JMenuItem("View, Update, or Delete");
 		} else {
-			viewPo = new JMenuItem("View");
+			viewPolicy = new JMenuItem("View");
 		}
 
-		viewPo.addActionListener(new PolicyDBScreen(_frame, _fn, _location));
-		menuPo.add(viewPo);
+		viewPolicy.addActionListener(new PolicyDBScreen(_frame, _login_type, _location));
+		menuPolicy.add(viewPolicy);
 
-		JMenu menuEx = new JMenu("External");
-		_menuBar.add(menuEx);
+		JMenu menuExternal = new JMenu("External");
+		_menuBar.add(menuExternal);
 
-		addEx = new JMenuItem("Export Data");
-		addEx.addActionListener(new DataExportScreen(_frame, _fn, _location));
-		menuEx.add(addEx);
+		addExternal = new JMenuItem("Export Data");
+		addExternal.addActionListener(new DataExportScreen(_frame, _login_type, _location));
+		menuExternal.add(addExternal);
 
-		viewEx = new JMenuItem("View Imported Data");
-		viewEx.addActionListener(new DataImportScreen(_frame, _fn, _location));
-		menuEx.add(viewEx);
+		viewExternal = new JMenuItem("View Imported Data");
+		viewExternal.addActionListener(new DataImportScreen(_frame, _login_type, _location));
+		menuExternal.add(viewExternal);
 
-		JMenu menuA = new JMenu("About");
-		_menuBar.add(menuA);
+		JMenu menuAbout = new JMenu("About");
+		_menuBar.add(menuAbout);
 
-		addA = new JMenuItem("About This Program");
-		addA.addActionListener(new AboutScreen(_frame, _fn, _location));
-		menuA.add(addA);
+		addAbout = new JMenuItem("About This Program");
+		addAbout.addActionListener(new AboutScreen(_frame, _login_type, _location));
+		menuAbout.add(addAbout);
 
 		return _menuBar;
 	}

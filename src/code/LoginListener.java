@@ -22,7 +22,7 @@ public class LoginListener implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -66,13 +66,13 @@ public class LoginListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		String location = (String) _ldb.getSelectedItem();
-		_fn = (String) _idb.getSelectedItem();
+		_login_type = (String) _idb.getSelectedItem();
 		String user = _name.getText();
 		String pass = _pass.getText();
 
-		if (_fn.equalsIgnoreCase("Administrator")) {
+		if (_login_type.equalsIgnoreCase("Administrator")) {
 			if ((user.equalsIgnoreCase("admin")) && (pass.equals("admin"))) {
-				MainScreen page = new MainScreen(_frame, _fn, location);
+				MainScreen page = new MainScreen(_frame, _login_type, location);
 				page.actionPerformed(null);
 			} else {
 				_error.setText("Invalid Login");
@@ -84,8 +84,7 @@ public class LoginListener implements ActionListener {
 			if ((pass.equals("password")) && checkUser(user)) {
 				// checkUser checks to see if user is in DB and also
 				// that the type they selected is the same as the type in the DB
-				String type = Helper.selectItem(user, "USERNAME", "TYPE",
-						"USERS");
+				String type = Helper.selectItem(user, "USERNAME", "TYPE", "USERS");
 				MainScreen page = new MainScreen(_frame, type, location);
 				page.actionPerformed(null);
 			} else {
@@ -118,8 +117,7 @@ public class LoginListener implements ActionListener {
 		try {
 			c.setAutoCommit(false);
 			s = c.createStatement();
-			result = s.executeQuery("SELECT TYPE FROM USERS WHERE USERNAME='"
-					+ username + "';");
+			result = s.executeQuery("SELECT TYPE FROM USERS WHERE USERNAME='" + username + "';");
 			if (!result.next()) {
 				System.out.println("no data");
 				s.close();
@@ -128,7 +126,7 @@ public class LoginListener implements ActionListener {
 				return false;
 			} else {
 				String type2 = result.getString("TYPE");
-				if (_fn.equals(type2)) {
+				if (_login_type.equals(type2)) {
 					s.close();
 					c.close();
 					result.close();

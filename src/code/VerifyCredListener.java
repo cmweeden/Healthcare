@@ -23,7 +23,7 @@ public class VerifyCredListener implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -42,7 +42,7 @@ public class VerifyCredListener implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -51,14 +51,14 @@ public class VerifyCredListener implements ActionListener {
 	 * @param write
 	 * @param error
 	 */
-	public VerifyCredListener(JFrame f, String fn, String loc, JComboBox pid,
+	public VerifyCredListener(JFrame f, String login_type, String loc, JComboBox pid,
 			JCheckBox read, JCheckBox write, JLabel error) {
 		_pid = pid;
 		_loc = loc;
 		_read = read;
 		_write = write;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 
 		_error = error;
 	}
@@ -80,7 +80,7 @@ public class VerifyCredListener implements ActionListener {
 
 		where += "P.PID='" + _pid.getSelectedItem() + "' ";
 
-		where += "AND SUBJECT='" + _fn + "' ";
+		where += "AND SUBJECT='" + _login_type + "' ";
 
 		where += "AND ORGANIZATION='" + _loc + "' ";
 
@@ -92,7 +92,7 @@ public class VerifyCredListener implements ActionListener {
 		}
 
 		PolicyDatabase db = new PolicyDatabase();
-		ArrayList<String> val = db.select(where, _fn);
+		ArrayList<String> val = db.select(where, _login_type);
 		boolean access = Boolean.parseBoolean(val.get(0));
 		String xml = val.get(1);
 		System.out.println(access);
@@ -136,7 +136,7 @@ public class VerifyCredListener implements ActionListener {
 					next = false;
 				}
 
-				PatientDBScreen screen = new PatientDBScreen(_frame, _fn, _loc,
+				PatientDBScreen screen = new PatientDBScreen(_frame, _login_type, _loc,
 						pid, f, l, dob, ins, array2, 5, next, back, policy);
 				screen.createFrame(3);
 

@@ -1,5 +1,9 @@
 package code;
 
+//Reuse frame created in Login Screen
+// This second LoginScreen allows creation and retention of menu bars
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ public class LoginScreen2 implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -43,7 +47,6 @@ public class LoginScreen2 implements ActionListener {
 
 		height = 40;
 		width = 160;
-
 	}
 
 	/*

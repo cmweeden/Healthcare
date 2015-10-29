@@ -22,7 +22,7 @@ public class GetXmlListener implements ActionListener {
 	JComboBox _org;
 	JCheckBox _read;
 	JCheckBox _write;
-	String _fn;
+	String _login_type;
 
 	/**
 	 * @param pid
@@ -30,16 +30,16 @@ public class GetXmlListener implements ActionListener {
 	 * @param org
 	 * @param read
 	 * @param write
-	 * @param fn
+	 * @param login_type
 	 */
 	public GetXmlListener(JComboBox pid, JComboBox subject, JComboBox org,
-			JCheckBox read, JCheckBox write, String fn) {
+			JCheckBox read, JCheckBox write, String login_type) {
 		_pid = pid;
 		_subject = subject;
 		_org = org;
 		_read = read;
 		_write = write;
-		_fn = fn;
+		_login_type = login_type;
 
 	}
 
@@ -85,7 +85,7 @@ public class GetXmlListener implements ActionListener {
 		}
 
 		PolicyDatabase db = new PolicyDatabase();
-		ArrayList<String> val = db.select(where, _fn);
+		ArrayList<String> val = db.select(where, _login_type);
 		String xml = val.get(1);
 
 		JFrame frame = new JFrame("Selected Policies");

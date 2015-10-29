@@ -51,7 +51,7 @@ public class HIEDBListener implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -83,7 +83,7 @@ public class HIEDBListener implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -95,12 +95,12 @@ public class HIEDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public HIEDBListener(JFrame f, String fn, String loc, String action,
+	public HIEDBListener(JFrame f, String login_type, String loc, String action,
 			JComboBox pid, JTextField firstname, JTextField lastname,
 			JTextField dob, JComboBox insurance, JLabel error) {
 		// From DataExportScreen view patient data when not researcher
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_pid = pid;
 		_first = firstname;
 		_last = lastname;
@@ -116,7 +116,7 @@ public class HIEDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param action
 	 * @param pid
@@ -124,11 +124,11 @@ public class HIEDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public HIEDBListener(JFrame f, String fn, String loc, String action,
+	public HIEDBListener(JFrame f, String login_type, String loc, String action,
 			JComboBox pid, JTextField dob, JComboBox insurance, JLabel error) {
 		// From DataExportScreen view patient data when researcher
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_pid = pid;
 		_birth = dob;
 		_ins = insurance;
@@ -141,17 +141,17 @@ public class HIEDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param action
 	 * @param did
 	 * @param error
 	 */
-	public HIEDBListener(JFrame f, String fn, String loc, String action,
+	public HIEDBListener(JFrame f, String login_type, String loc, String action,
 			JComboBox did, JLabel error) {
 		// From data import screen when view imported data or delete db element
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_did = did;
 		_action = action;
 		_loc = loc;
@@ -161,7 +161,7 @@ public class HIEDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param action
 	 * @param pid
@@ -171,12 +171,12 @@ public class HIEDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public HIEDBListener(JFrame f, String fn, String loc, String action,
+	public HIEDBListener(JFrame f, String login_type, String loc, String action,
 			String pid, JTextField firstname, JTextField lastname,
 			JTextField dob, JComboBox insurance, JLabel error) {
 		// From DataExportScreen when is data export
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_pidS = pid;
 		_first = firstname;
 		_last = lastname;
@@ -193,19 +193,19 @@ public class HIEDBListener implements ActionListener {
 	/**
 	 * @param where
 	 * @param frame
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param action
 	 * @param array
 	 * @param i
 	 * @param error
 	 */
-	public HIEDBListener(String where, JFrame frame, String fn, String loc,
+	public HIEDBListener(String where, JFrame frame, String login_type, String loc,
 			String action, ArrayList<String> array, int i, JLabel error) {
 		// For next and previous on multiple patients from DataExportScreen
 		_where = where;
 		_frame = frame;
-		_fn = fn;
+		_login_type = login_type;
 		_action = action;
 		_array = array;
 		_i = i;
@@ -223,7 +223,7 @@ public class HIEDBListener implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		if (_action.equalsIgnoreCase("view")) {
-			if (_fn.equalsIgnoreCase("Administrator")) {
+			if (_login_type.equalsIgnoreCase("Administrator")) {
 
 				String where = addWhere((String) _pid.getSelectedItem(),
 						_first.getText(), _last.getText(), _birth.getText(),
@@ -248,14 +248,14 @@ public class HIEDBListener implements ActionListener {
 					}
 
 					DataExportScreen screen = new DataExportScreen(where,
-							_frame, _fn, _loc, pid, f, l, dob, ins, array, 5,
+							_frame, _login_type, _loc, pid, f, l, dob, ins, array, 5,
 							next, back);
 					screen.createFrame(2);
 				} else {
 					_error.setText("No matching patients found");
 				}
 
-			} else if (_fn.equals("Researcher")) {
+			} else if (_login_type.equals("Researcher")) {
 
 				String where = addWhere((String) _pid.getSelectedItem(), null,
 						null, _birth.getText(), (String) _ins.getSelectedItem());
@@ -275,18 +275,18 @@ public class HIEDBListener implements ActionListener {
 						next = false;
 					}
 					DataExportScreen screen = new DataExportScreen(where,
-							_frame, _fn, _loc, pid, dob, ins, array, 5, next,
+							_frame, _login_type, _loc, pid, dob, ins, array, 5, next,
 							back);
 					screen.createFrame(2);
 				} else {
 					_error.setText("No matching patients found");
 				}
 
-			} else if (_fn.equals("Physician")) {
+			} else if (_login_type.equals("Physician")) {
 
-				// TODO Promulgate the change to add ' ' around the _fn
+				// TODO Promulgate the change to add ' ' around the _login_type
 				// everywhere this is used.
-				String sentence = "U.TYPE = '" + _fn + "'";
+				String sentence = "U.TYPE = '" + _login_type + "'";
 				PolicyDatabase p_db = new PolicyDatabase();
 				ArrayList<String> p_id = p_db.checkCred(sentence);
 
@@ -310,7 +310,7 @@ public class HIEDBListener implements ActionListener {
 							String dob = array.get(3);
 							String ins = array.get(4);
 							DataExportScreen screen = new DataExportScreen(
-									_frame, _fn, _loc, pid, f, l, dob, ins);
+									_frame, _login_type, _loc, pid, f, l, dob, ins);
 							screen.createFrame(2);
 						}
 						i++;
@@ -318,9 +318,9 @@ public class HIEDBListener implements ActionListener {
 				}
 
 				_error.setText("ACCESS DENIED");
-			} else if (_fn.equals("Insurance Agent")) {
+			} else if (_login_type.equals("Insurance Agent")) {
 
-				String sentence = "U.TYPE = '" + _fn + "'";
+				String sentence = "U.TYPE = '" + _login_type + "'";
 				PolicyDatabase p_db = new PolicyDatabase();
 				ArrayList<String> p_id = p_db.checkCred(sentence);
 
@@ -342,7 +342,7 @@ public class HIEDBListener implements ActionListener {
 							String dob = array.get(3);
 							String ins = array.get(4);
 							DataExportScreen screen = new DataExportScreen(
-									_frame, _fn, _loc, pid, f, l, dob, ins);
+									_frame, _login_type, _loc, pid, f, l, dob, ins);
 							screen.createFrame(2);
 
 						}
@@ -353,10 +353,10 @@ public class HIEDBListener implements ActionListener {
 				_error.setText("ACCESS DENIED");
 
 			} else {
-				_error.setText("Must select a valid type to view: " + _fn);
+				_error.setText("Must select a valid type to view: " + _login_type);
 			}
 		} else if (_action.equalsIgnoreCase("next")) {
-			if (!_fn.equals("researcher")) {
+			if (!_login_type.equals("researcher")) {
 
 				String pid = _array.get(_i);
 				String f = _array.get(_i + 1);
@@ -380,11 +380,11 @@ public class HIEDBListener implements ActionListener {
 				}
 
 				DataExportScreen screen = new DataExportScreen(_where, _frame,
-						_fn, _loc, pid, f, l, dob, ins, _array, _i + 5, next,
+						_login_type, _loc, pid, f, l, dob, ins, _array, _i + 5, next,
 						back);
 				screen.createFrame(2);
 
-			} else if (_fn.equals("researcher")) {
+			} else if (_login_type.equals("researcher")) {
 
 				String pid = _array.get(_i);
 				String dob = _array.get(_i + 3);
@@ -405,7 +405,7 @@ public class HIEDBListener implements ActionListener {
 				}
 
 				DataExportScreen screen = new DataExportScreen(_where, _frame,
-						_fn, _loc, pid, dob, ins, _array, _i + 5, next, back);
+						_login_type, _loc, pid, dob, ins, _array, _i + 5, next, back);
 				screen.createFrame(2);
 
 			}
@@ -427,12 +427,12 @@ public class HIEDBListener implements ActionListener {
 			if (tid < 0) {
 				// Unable to insert
 				// Load up new screen with error message
-				DataExportScreen screen = new DataExportScreen(_frame, _fn,
+				DataExportScreen screen = new DataExportScreen(_frame, _login_type,
 						_loc);
 				screen.createFrame(1);
 			} else {
 				String wh;
-				if (!(_fn.equalsIgnoreCase("Researcher"))) {
+				if (!(_login_type.equalsIgnoreCase("Researcher"))) {
 					// text += eol + "Patient Name: " + _first.getText() + " "
 					// + _last.getText();
 					wh = addWhere(_pidS, _first.getText(), _last.getText(),
@@ -442,14 +442,14 @@ public class HIEDBListener implements ActionListener {
 							(String) _ins.getSelectedItem());
 				}
 				PatientDatabase db = new PatientDatabase();
-				ArrayList<String> val = db.select(wh, _fn);
+				ArrayList<String> val = db.select(wh, _login_type);
 				text = val.get(1);
 
 				// TODO save this for later, use for multiple key/policy.
 				// Difficult to implement
 				PolicyDatabase p_db = new PolicyDatabase();
 				wh = "X.PID= " + _pidS;
-				ArrayList<String> val1 = p_db.selectPol(wh, _fn, tid);
+				ArrayList<String> val1 = p_db.selectPol(wh, _login_type, tid);
 				// System.out.println(val1.get(1));
 
 				pol = val1.get(1);
@@ -457,11 +457,11 @@ public class HIEDBListener implements ActionListener {
 				// text += eol + "Insurance Provider: "
 				// + (String) _ins.getSelectedItem();
 
-				// if ((_fn.equalsIgnoreCase("researcher"))) {
+				// if ((_login_type.equalsIgnoreCase("researcher"))) {
 				// ckey = "Blank for now";
 				//
-				// } else if ((_fn.equals("Physician"))
-				// || (_fn.equals("Insurance"))) {
+				// } else if ((_login_type.equals("Physician"))
+				// || (_login_type.equals("Insurance"))) {
 				// ckey = tid + " " + _docId + " " + _loc;
 				//
 				// } else {
@@ -511,7 +511,7 @@ public class HIEDBListener implements ActionListener {
 
 				hie.update(colvals, where);
 				// TODO Display Tid
-				// DataExportScreen screen = new DataExportScreen(_frame, _fn,
+				// DataExportScreen screen = new DataExportScreen(_frame, _login_type,
 				// _loc, tid);
 				// screen.createFrame(3);
 				_error.setText("Data Exported with TID " + tid);
@@ -531,12 +531,12 @@ public class HIEDBListener implements ActionListener {
 			// frame.setLocationRelativeTo(null);
 
 			// Solicit name for document via new screen pop up
-			// if ((_fn.equals("physician")) || (_fn.equals("insurance"))) {
-			// DocumentScreen dscreen = new DocumentScreen(_frame, _fn,
+			// if ((_login_type.equals("physician")) || (_login_type.equals("insurance"))) {
+			// DocumentScreen dscreen = new DocumentScreen(_frame, _login_type,
 			// _docId, _loc, text);
 			// DocumentScreen.createFrame();
 			// } else {
-			// DocumentScreen dscreen = new DocumentScreen(_frame, _fn, text);
+			// DocumentScreen dscreen = new DocumentScreen(_frame, _login_type, text);
 			// DocumentScreen.createFrame();
 			// }
 
@@ -556,11 +556,11 @@ public class HIEDBListener implements ActionListener {
 
 			String dkey = createXML(Integer.valueOf(did));
 
-			// if ((_fn.equalsIgnoreCase("Researcher"))) {
+			// if ((_login_type.equalsIgnoreCase("Researcher"))) {
 			// dkey = "Blank for now";
 			//
-			// } else if ((_fn.equals("Physician")) ||
-			// (_fn.equals("Insurance"))) {
+			// } else if ((_login_type.equals("Physician")) ||
+			// (_login_type.equals("Insurance"))) {
 			// dkey = did + " " + _docId + " " + _loc;
 			//
 			// } else {
@@ -629,12 +629,12 @@ public class HIEDBListener implements ActionListener {
 
 			}
 
-			DataImportScreen screen = new DataImportScreen(_frame, _fn, _loc,
+			DataImportScreen screen = new DataImportScreen(_frame, _login_type, _loc,
 					did, message);
 			screen.createFrame(2);
 
 		} else if (_action.equalsIgnoreCase("delete")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 
 				String did = (String) _did.getSelectedItem();
 				String where = "ID = " + did;
@@ -643,7 +643,7 @@ public class HIEDBListener implements ActionListener {
 				boolean success = hie.delete(where);
 
 				if (success) {
-					DataImportScreen screen = new DataImportScreen(_frame, _fn,
+					DataImportScreen screen = new DataImportScreen(_frame, _login_type,
 							_loc);
 					screen.createFrame(1);
 				} else {
@@ -779,7 +779,7 @@ public class HIEDBListener implements ActionListener {
 			doc.appendChild(resultsE);
 
 			Element node = doc.createElement("SUBJECT");
-			node.appendChild(doc.createTextNode(_fn));
+			node.appendChild(doc.createTextNode(_login_type));
 			resultsE.appendChild(node);
 
 			node = doc.createElement("OBJECT");

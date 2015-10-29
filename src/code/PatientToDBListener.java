@@ -20,7 +20,7 @@ public class PatientToDBListener implements ActionListener {
 	static JFrame _frame;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -49,7 +49,7 @@ public class PatientToDBListener implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -60,7 +60,7 @@ public class PatientToDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public PatientToDBListener(JFrame f, String fn, String loc, String action,
+	public PatientToDBListener(JFrame f, String type, String loc, String action,
 			JTextField firstname, JTextField lastname, JTextField dob,
 			JComboBox insurance, JLabel error) {
 		// Used for patient add
@@ -70,7 +70,7 @@ public class PatientToDBListener implements ActionListener {
 		_birth = dob;
 		_ins = insurance;
 		_action = action;
-		_fn = fn;
+		_login_type = type;
 		whichId = false;
 		_loc = loc;
 
@@ -79,7 +79,7 @@ public class PatientToDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param action
 	 * @param pid
@@ -89,12 +89,12 @@ public class PatientToDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public PatientToDBListener(JFrame f, String fn, String loc, String action,
+	public PatientToDBListener(JFrame f, String type, String loc, String action,
 			JComboBox pid, JTextField firstname, JTextField lastname,
 			JTextField dob, JComboBox insurance, JLabel error) {
 		// Used for patient view (all but researcher)
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		_pid = pid;
 		_first = firstname;
 		_last = lastname;
@@ -109,7 +109,7 @@ public class PatientToDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param action
 	 * @param pid
@@ -117,11 +117,11 @@ public class PatientToDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public PatientToDBListener(JFrame f, String fn, String loc, String action,
+	public PatientToDBListener(JFrame f, String type, String loc, String action,
 			JComboBox pid, JTextField dob, JComboBox insurance, JLabel error) {
 		// Used for patient view (researcher)
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		_pid = pid;
 		_birth = dob;
 		_ins = insurance;
@@ -134,7 +134,7 @@ public class PatientToDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param action
 	 * @param pid
@@ -144,14 +144,14 @@ public class PatientToDBListener implements ActionListener {
 	 * @param insurance
 	 * @param error
 	 */
-	public PatientToDBListener(JFrame f, String fn, String loc, String action,
+	public PatientToDBListener(JFrame f, String type, String loc, String action,
 			String pid, JTextField firstname, JTextField lastname,
 			JTextField dob, JComboBox insurance, JLabel error) {
 		// Used for physician update
 		// TODO Why does admin update pass through the where string, but not
 		// physician?
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		_pidS = pid;
 		_first = firstname;
 		_last = lastname;
@@ -167,7 +167,7 @@ public class PatientToDBListener implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param action
 	 * @param pid
@@ -179,14 +179,14 @@ public class PatientToDBListener implements ActionListener {
 	 * @param i
 	 * @param error
 	 */
-	public PatientToDBListener(JFrame f, String fn, String loc, String action,
+	public PatientToDBListener(JFrame f, String type, String loc, String action,
 			String pid, JTextField firstname, JTextField lastname,
 			JTextField dob, JComboBox insurance, ArrayList<String> array,
 			int i, JLabel error) {
 		// Used for patient update if from policy
 		// Pass through array in case of multiple. May be empty?
 		_frame = f;
-		_fn = fn;
+		_login_type = type;
 		_pidS = pid;
 		_first = firstname;
 		_last = lastname;
@@ -204,7 +204,7 @@ public class PatientToDBListener implements ActionListener {
 
 	/**
 	 * @param frame
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param action
 	 * @param nameText
@@ -214,13 +214,13 @@ public class PatientToDBListener implements ActionListener {
 	 * @param where
 	 * @param error
 	 */
-	public PatientToDBListener(JFrame frame, String fn, String loc,
+	public PatientToDBListener(JFrame frame, String type, String loc,
 			String action, JTextField nameText, JTextField lnameText,
 			JTextField ageText, JComboBox insBox, String where, JLabel error) {
 		// Used for admin update and delete
 
 		_frame = frame;
-		_fn = fn;
+		_login_type = type;
 		_first = nameText;
 		_last = lnameText;
 		_birth = ageText;
@@ -236,7 +236,7 @@ public class PatientToDBListener implements ActionListener {
 	/**
 	 * @param where
 	 * @param frame
-	 * @param fn
+	 * @param type
 	 * @param loc
 	 * @param action
 	 * @param array
@@ -244,14 +244,14 @@ public class PatientToDBListener implements ActionListener {
 	 * @param pol
 	 * @param error
 	 */
-	public PatientToDBListener(String where, JFrame frame, String fn,
+	public PatientToDBListener(String where, JFrame frame, String type,
 			String loc, String action, ArrayList<String> array, int i,
 			Boolean pol, JLabel error) {
 		// Used when multiple patients, from next patient and previous patient
 		// buttons
 		_where = where;
 		_frame = frame;
-		_fn = fn;
+		_login_type = type;
 		_action = action;
 		_array = array;
 		_i = i;
@@ -270,7 +270,7 @@ public class PatientToDBListener implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		if (_action.equalsIgnoreCase("insert")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 
 				String firstname = _first.getText();
 				String lastname = _last.getText();
@@ -287,7 +287,7 @@ public class PatientToDBListener implements ActionListener {
 					_birth.setText("");
 					_ins.setSelectedIndex(0);
 				}
-				// PatientDBScreen screen = new PatientDBScreen(_frame, _fn,
+				// PatientDBScreen screen = new PatientDBScreen(_frame, _login_type,
 				// _loc);
 				// screen.createFrame(2);
 
@@ -295,12 +295,12 @@ public class PatientToDBListener implements ActionListener {
 				_error.setText("Must be an admin to add new patients.");
 			}
 		} else if (_action.equalsIgnoreCase("update")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 				PatientDatabase db = new PatientDatabase();
 				boolean success = db.update(addCols(), _where);
 				// System.out.println("addCols: " + addCols());
 				// System.out.println("where: " + _where);
-				// PatientDBScreen screen = new PatientDBScreen(_frame, _fn,
+				// PatientDBScreen screen = new PatientDBScreen(_frame, _login_type,
 				// _loc);
 				// screen.createFrame(1);
 				if (success) {
@@ -309,7 +309,7 @@ public class PatientToDBListener implements ActionListener {
 					_error.setText("Unable to update patient data");
 				}
 
-			} else if (_fn.equalsIgnoreCase("physician")) {
+			} else if (_login_type.equalsIgnoreCase("physician")) {
 
 				if ((_pid == null) && (_pidS == null)) {
 					_i = _i - 5;
@@ -324,7 +324,7 @@ public class PatientToDBListener implements ActionListener {
 				if (_where == null) {
 					_where = addWhereS(_pidS, null, null, null, null);
 				}
-				String sentence = "U.TYPE = '" + _fn + "'";
+				String sentence = "U.TYPE = '" + _login_type + "'";
 				PolicyDatabase p_db = new PolicyDatabase();
 				ArrayList<String> writeP = p_db.checkWrite(sentence);
 
@@ -335,7 +335,7 @@ public class PatientToDBListener implements ActionListener {
 					boolean success = db.update(addCols(), _where);
 					// System.out.println("addCols: " + addCols());
 					// System.out.println("where: " + _where);
-					// PatientDBScreen screen = new PatientDBScreen(_frame, _fn,
+					// PatientDBScreen screen = new PatientDBScreen(_frame, _login_type,
 					// _loc);
 					// screen.createFrame(1);
 					if (success) {
@@ -377,7 +377,7 @@ public class PatientToDBListener implements ActionListener {
 																			// brackets
 				_error.setText("Must enter an ID.");
 			} else {
-				if (_fn.equalsIgnoreCase("administrator")) {
+				if (_login_type.equalsIgnoreCase("administrator")) {
 
 					String where = addWhere(_pid, _first, _last, _birth, _ins);
 					PatientDatabase db = new PatientDatabase();
@@ -401,14 +401,14 @@ public class PatientToDBListener implements ActionListener {
 						}
 
 						PatientDBScreen screen = new PatientDBScreen(where,
-								_frame, _fn, _loc, pid, f, l, dob, ins, array,
+								_frame, _login_type, _loc, pid, f, l, dob, ins, array,
 								5, next, back);
 						screen.createFrame(3);
 					} else {
 						_error.setText("Could not find a matching patient");
 					}
 
-				} else if (_fn.equalsIgnoreCase("researcher")) {
+				} else if (_login_type.equalsIgnoreCase("researcher")) {
 
 					String where = addWhere(_pid, null, null, _birth, _ins);
 					PatientDatabase db = new PatientDatabase();
@@ -427,16 +427,16 @@ public class PatientToDBListener implements ActionListener {
 							next = false;
 						}
 						PatientDBScreen screen = new PatientDBScreen(where,
-								_frame, _fn, _loc, pid, dob, ins, array, 5,
+								_frame, _login_type, _loc, pid, dob, ins, array, 5,
 								next, back);
 						screen.createFrame(3);
 					} else {
 						_error.setText("Could not find a matching patient");
 					}
 
-				} else if (_fn.equalsIgnoreCase("physician")) {
+				} else if (_login_type.equalsIgnoreCase("physician")) {
 
-					String sentence = "U.TYPE = '" + _fn + "'";
+					String sentence = "U.TYPE = '" + _login_type + "'";
 					PolicyDatabase p_db = new PolicyDatabase();
 					ArrayList<String> p_id = p_db.checkCred(sentence);
 					// String pid2;
@@ -475,7 +475,7 @@ public class PatientToDBListener implements ActionListener {
 									String dob = array.get(3);
 									String ins = array.get(4);
 									PatientDBScreen screen = new PatientDBScreen(
-											_frame, _fn, _loc, pid, f, l, dob,
+											_frame, _login_type, _loc, pid, f, l, dob,
 											ins);
 									screen.createFrame(3);
 								}
@@ -503,7 +503,7 @@ public class PatientToDBListener implements ActionListener {
 										String dob = array.get(j + 3);
 										String ins = array.get(j + 4);
 										PatientDBScreen screen = new PatientDBScreen(
-												_frame, _fn, _loc, pid, f, l,
+												_frame, _login_type, _loc, pid, f, l,
 												dob, ins);
 										screen.createFrame(3);
 									}
@@ -526,9 +526,9 @@ public class PatientToDBListener implements ActionListener {
 					// frame2.pack();
 					_error.setText("ACCESS DENIED");
 
-				} else if (_fn.equalsIgnoreCase("insurance agent")) {
+				} else if (_login_type.equalsIgnoreCase("insurance agent")) {
 
-					String sentence = "U.TYPE = '" + _fn + "'";
+					String sentence = "U.TYPE = '" + _login_type + "'";
 					PolicyDatabase p_db = new PolicyDatabase();
 					ArrayList<String> p_id = p_db.checkCred(sentence);
 
@@ -547,7 +547,7 @@ public class PatientToDBListener implements ActionListener {
 								String dob = array.get(3);
 								String ins = array.get(4);
 								PatientDBScreen screen = new PatientDBScreen(
-										_frame, _fn, _loc, pid, f, l, dob, ins);
+										_frame, _login_type, _loc, pid, f, l, dob, ins);
 								screen.createFrame(3);
 							}
 							i++;
@@ -561,7 +561,7 @@ public class PatientToDBListener implements ActionListener {
 				}
 			}
 		} else if (_action.equalsIgnoreCase("delete")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 
 				if (_pid != null) {
 					_where = addWhere(_pid, _first, _last, _birth, _ins);
@@ -570,7 +570,7 @@ public class PatientToDBListener implements ActionListener {
 				boolean success = db.delete(_where);
 
 				if (success) {
-					PatientDBScreen screen = new PatientDBScreen(_frame, _fn,
+					PatientDBScreen screen = new PatientDBScreen(_frame, _login_type,
 							_loc);
 					screen.createFrame(1);
 				} else {
@@ -585,14 +585,14 @@ public class PatientToDBListener implements ActionListener {
 			} else {
 				_error.setText("Must be an admin to delete patients.");
 			}
-			if (!(_fn.equalsIgnoreCase("researcher"))) {
+			if (!(_login_type.equalsIgnoreCase("researcher"))) {
 				_first.setText("");
 				_last.setText("");
 			}
 			_birth.setText("");
 			_ins.setSelectedItem("");
 		} else if (_action.equalsIgnoreCase("next")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 
 				String pid = _array.get(_i);
 				String f = _array.get(_i + 1);
@@ -616,11 +616,11 @@ public class PatientToDBListener implements ActionListener {
 				}
 
 				PatientDBScreen screen = new PatientDBScreen(_where, _frame,
-						_fn, _loc, pid, f, l, dob, ins, _array, _i + 5, next,
+						_login_type, _loc, pid, f, l, dob, ins, _array, _i + 5, next,
 						back);
 				screen.createFrame(3);
 
-			} else if (_fn.equalsIgnoreCase("researcher")) {
+			} else if (_login_type.equalsIgnoreCase("researcher")) {
 
 				if (!_pol) {
 					String pid = _array.get(_i);
@@ -642,7 +642,7 @@ public class PatientToDBListener implements ActionListener {
 					}
 
 					PatientDBScreen screen = new PatientDBScreen(_where,
-							_frame, _fn, _loc, pid, dob, ins, _array, _i + 5,
+							_frame, _login_type, _loc, pid, dob, ins, _array, _i + 5,
 							next, back);
 					screen.createFrame(3);
 				} else {
@@ -673,7 +673,7 @@ public class PatientToDBListener implements ActionListener {
 						next = false;
 					}
 
-					PatientDBScreen screen = new PatientDBScreen(_frame, _fn,
+					PatientDBScreen screen = new PatientDBScreen(_frame, _login_type,
 							_loc, pid3, f, l, dob, ins, _array, _i + 5, next,
 							back, _pol);
 					screen.createFrame(3);

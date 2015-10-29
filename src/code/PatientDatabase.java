@@ -246,10 +246,10 @@ public class PatientDatabase {
 
 	/**
 	 * @param sentence
-	 * @param fn
+	 * @param login_type
 	 * @return
 	 */
-	public ArrayList<String> select(String sentence, String fn) {
+	public ArrayList<String> select(String sentence, String login_type) {
 		Statement s = null;
 		Statement s2 = null;
 		ResultSet results = null;
@@ -264,7 +264,7 @@ public class PatientDatabase {
 			s = c.createStatement();
 			s2 = c.createStatement();
 			String sql;
-			if (fn.equalsIgnoreCase("Researcher")) {
+			if (login_type.equalsIgnoreCase("Researcher")) {
 				sql = "SELECT PID, DATE_OF_BIRTH, INSURANCE_PROVIDER "
 						+ "FROM PATIENTS " + " WHERE " + sentence + ";";
 

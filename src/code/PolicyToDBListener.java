@@ -15,7 +15,7 @@ public class PolicyToDBListener implements ActionListener {
 	static JFrame _frame;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -43,7 +43,7 @@ public class PolicyToDBListener implements ActionListener {
 	 * @param where
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -52,12 +52,12 @@ public class PolicyToDBListener implements ActionListener {
 	 * @param i
 	 * @param error
 	 */
-	public PolicyToDBListener(String where, JFrame f, String fn, String loc,
+	public PolicyToDBListener(String where, JFrame f, String login_type, String loc,
 			String a, ArrayList<String> array, int i, JLabel error) {
 		// When multiple policies, from next and previous buttons
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_loc = loc;
 		_array = array;
@@ -69,7 +69,7 @@ public class PolicyToDBListener implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -86,13 +86,13 @@ public class PolicyToDBListener implements ActionListener {
 	 * @param resp2
 	 * @param error
 	 */
-	public PolicyToDBListener(JFrame f, String fn, String loc, String a,
+	public PolicyToDBListener(JFrame f, String login_type, String loc, String a,
 			JComboBox pid, JComboBox subject, JComboBox org, JCheckBox read,
 			JCheckBox write, JCheckBox tool1, JCheckBox tool2, JCheckBox rule1,
 			JCheckBox resp1, JCheckBox resp2, JLabel error) {
 		// View or delete from admin, or view from researcher
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_pid = pid;
 		_subject = subject;
@@ -116,7 +116,7 @@ public class PolicyToDBListener implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -131,13 +131,13 @@ public class PolicyToDBListener implements ActionListener {
 	 * @param resp2
 	 * @param error
 	 */
-	public PolicyToDBListener(JFrame f, String fn, String loc, String a,
+	public PolicyToDBListener(JFrame f, String login_type, String loc, String a,
 			JComboBox pid, JCheckBox read, JCheckBox write, JCheckBox tool1,
 			JCheckBox tool2, JCheckBox rule1, JCheckBox resp1, JCheckBox resp2,
 			JLabel error) {
 		// View from physician or insurance agent
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_pid = pid;
 		_loc = loc;
@@ -160,7 +160,7 @@ public class PolicyToDBListener implements ActionListener {
 	 * @param where
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -177,7 +177,7 @@ public class PolicyToDBListener implements ActionListener {
 	 * @param resp2
 	 * @param error
 	 */
-	public PolicyToDBListener(String where, JFrame f, String fn, String loc,
+	public PolicyToDBListener(String where, JFrame f, String login_type, String loc,
 			String a, JComboBox idb, JComboBox subjectb, JComboBox orgb,
 			JCheckBox read, JCheckBox write, JCheckBox tool1, JCheckBox tool2,
 			JCheckBox rule1, JCheckBox resp1, JCheckBox resp2, JLabel error) {
@@ -185,7 +185,7 @@ public class PolicyToDBListener implements ActionListener {
 
 		_where = where;
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_action = a;
 		_subject = subjectb;
 		_pid = idb;
@@ -225,7 +225,7 @@ public class PolicyToDBListener implements ActionListener {
 			if (_subject != null) {
 				subject = (String) _subject.getSelectedItem();
 			} else {
-				subject = _fn;
+				subject = _login_type;
 			}
 			String org;
 			if (_org != null) {
@@ -259,11 +259,11 @@ public class PolicyToDBListener implements ActionListener {
 			} else {
 				resp = "No contact set";
 			}
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 				int polid = db.insert(pid, subject, org, _read.isSelected(),
 						_write.isSelected(), tool, rule, resp);
 				if (!(polid < 0)) {
-					// PolicyDBScreen screen = new PolicyDBScreen(_frame, _fn,
+					// PolicyDBScreen screen = new PolicyDBScreen(_frame, _login_type,
 					// _loc);
 					// screen.createFrame(2);
 					_pid.setSelectedIndex(0);
@@ -284,7 +284,7 @@ public class PolicyToDBListener implements ActionListener {
 				_error.setText("Must be an admin to add new policies.");
 			}
 		} else if (_action.equals("update")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 
 				System.out.println(_where);
 				boolean success = db.update(addCols(), _where);
@@ -295,14 +295,14 @@ public class PolicyToDBListener implements ActionListener {
 					_error.setText("Unable to update policy data");
 				}
 
-				// PolicyDBScreen screen = new PolicyDBScreen(_frame, _fn,
+				// PolicyDBScreen screen = new PolicyDBScreen(_frame, _login_type,
 				// _loc);
 				// screen.createFrame(1);
 			} else {
 				System.out.println("Must be an admin to modify policies.");
 			}
 		} else if (_action.equals("delete")) {
-			if (_fn.equalsIgnoreCase("administrator")) {
+			if (_login_type.equalsIgnoreCase("administrator")) {
 
 				if (_where == null) {
 					String pid = (String) _pid.getSelectedItem();
@@ -310,7 +310,7 @@ public class PolicyToDBListener implements ActionListener {
 					if (_subject != null) {
 						subject = (String) _subject.getSelectedItem();
 					} else {
-						subject = _fn;
+						subject = _login_type;
 					}
 					String org;
 					if (_org != null) {
@@ -322,7 +322,7 @@ public class PolicyToDBListener implements ActionListener {
 				}
 				boolean success = db.delete(_where);
 				if (success) {
-					PolicyDBScreen screen = new PolicyDBScreen(_frame, _fn,
+					PolicyDBScreen screen = new PolicyDBScreen(_frame, _login_type,
 							_loc);
 					screen.createFrame(1);
 				} else {
@@ -332,7 +332,7 @@ public class PolicyToDBListener implements ActionListener {
 				_error.setText("Must be an admin to modify policies.");
 			}
 		} else if (_action.equals("view")) {
-			if ((_fn.equalsIgnoreCase("administrator"))) {
+			if ((_login_type.equalsIgnoreCase("administrator"))) {
 				// TODO allow pid to be blank, as long as one of pid, subj, org
 				// is selected
 				// view
@@ -373,13 +373,13 @@ public class PolicyToDBListener implements ActionListener {
 
 					if (true) {
 						PolicyDBScreen screen = new PolicyDBScreen(_where,
-								_frame, _fn, _loc, pid2, sub, org2, read,
+								_frame, _login_type, _loc, pid2, sub, org2, read,
 								write, tool, rule, resp, array, 8, next, back);
 						screen.createFrame(3);
 
 						if (true) {
 							GetXmlListener view = new GetXmlListener(_pid,
-									_subject, _org, _read, _write, _fn);
+									_subject, _org, _read, _write, _login_type);
 							view.actionPerformed(null);
 						}
 					}
@@ -387,13 +387,13 @@ public class PolicyToDBListener implements ActionListener {
 					_error.setText("Could not find a matching policy");
 				}
 
-			} else if (_fn.equalsIgnoreCase("researcher")) {
+			} else if (_login_type.equalsIgnoreCase("researcher")) {
 				String pid = (String) _pid.getSelectedItem();
 				String subject;
 				if (_subject != null) {
 					subject = (String) _subject.getSelectedItem();
 				} else {
-					subject = _fn;
+					subject = _login_type;
 				}
 				String org;
 				if (_org != null) {
@@ -447,35 +447,35 @@ public class PolicyToDBListener implements ActionListener {
 						// screen.createFrame(3);
 
 						PatientDBScreen screen = new PatientDBScreen(_frame,
-								_fn, _loc, pid3, f, l, dob, ins, array, 8,
+								_login_type, _loc, pid3, f, l, dob, ins, array, 8,
 								next, back, policy);
 						screen.createFrame(3);
 
 						if (true) {
 							GetXmlListener view = new GetXmlListener(_pid,
-									_subject, _org, _read, _write, _fn);
+									_subject, _org, _read, _write, _login_type);
 							view.actionPerformed(null);
 						}
 					}
 				} else {
 					_error.setText("Could not find a matching policy");
 				}
-			} else if (_fn.equalsIgnoreCase("insurance agent")) {
+			} else if (_login_type.equalsIgnoreCase("insurance agent")) {
 				// Need to force subject to be logged in user pass thru username
-				VerifyCredListener verify = new VerifyCredListener(_frame, _fn,
+				VerifyCredListener verify = new VerifyCredListener(_frame, _login_type,
 						_loc, _pid, _read, _write, _error);
 				verify.actionPerformed(null);
-			} else if (_fn.equalsIgnoreCase("physician")) {
+			} else if (_login_type.equalsIgnoreCase("physician")) {
 				// Need to force subject to be logged in user pass thru username
 				// Make subject == username, but display full name and title
-				VerifyCredListener verify = new VerifyCredListener(_frame, _fn,
+				VerifyCredListener verify = new VerifyCredListener(_frame, _login_type,
 						_loc, _pid, _read, _write, _error);
 				verify.actionPerformed(null);
 			} else {
 				_error.setText("Must select a valid type to view.");
 			}
 		} else if (_action.equals("next")) {
-			if ((_fn.equalsIgnoreCase("administrator"))) {
+			if ((_login_type.equalsIgnoreCase("administrator"))) {
 
 				// view
 
@@ -507,7 +507,7 @@ public class PolicyToDBListener implements ActionListener {
 
 				if (true) {
 					PolicyDBScreen screen = new PolicyDBScreen(_where, _frame,
-							_fn, _loc, pid2, sub, org2, read, write, tool,
+							_login_type, _loc, pid2, sub, org2, read, write, tool,
 							rule, resp, _array, _i + 8, next, back);
 					screen.createFrame(3);
 

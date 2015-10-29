@@ -82,8 +82,9 @@ public class Helper {
 	 * information. Will look up the provided element in the chosen column, and
 	 * return the match. Is expected to only have one match, although can be
 	 * modified to return more than one match.
+	 *
 	 * 
-	 * @param xGiven
+	 * @param element
 	 *            The element used to find the correct row in the table
 	 * @param colGiven
 	 *            The column which the given element should be found in
@@ -92,9 +93,10 @@ public class Helper {
 	 * @param table
 	 *            The table in the database which the information is desired
 	 *            from
-	 * @return
+	 * @return string
+	 * 			  The name of the column wanted if it matches
 	 */
-	public static String selectItem(String xGiven, String colGiven,
+	public static String selectItem(String element, String colGiven,
 			String colWanted, String table) {
 
 		// TODO Change to return more than one result if applicable?
@@ -115,7 +117,7 @@ public class Helper {
 			c.setAutoCommit(false);
 			s = c.createStatement();
 			result = s.executeQuery("SELECT " + colWanted + " FROM " + table
-					+ " WHERE " + colGiven + "='" + xGiven + "';");
+					+ " WHERE " + colGiven + "='" + element + "';");
 			if (!result.next()) {
 				System.out.println("no data");
 				s.close();

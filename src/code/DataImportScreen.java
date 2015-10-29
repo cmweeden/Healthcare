@@ -23,7 +23,7 @@ public class DataImportScreen implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -35,19 +35,19 @@ public class DataImportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 */
-	public DataImportScreen(JFrame f, String fn, String loc) {
+	public DataImportScreen(JFrame f, String login_type, String loc) {
 		// Base Import Screen
 
 		height = 40;
 		width = 160;
 
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 
 	}
@@ -55,7 +55,7 @@ public class DataImportScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
+	 * @param login_type
 	 *            The user log-on type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
@@ -64,7 +64,7 @@ public class DataImportScreen implements ActionListener {
 	 * @param pt
 	 *            Text to display
 	 */
-	public DataImportScreen(JFrame f, String fn, String loc, String did,
+	public DataImportScreen(JFrame f, String login_type, String loc, String did,
 			String pt) {
 		// Displaying results of import
 
@@ -72,7 +72,7 @@ public class DataImportScreen implements ActionListener {
 		width = 160;
 
 		_frame = f;
-		_fn = fn;
+		_login_type = login_type;
 		_loc = loc;
 
 		_did = did;
@@ -167,17 +167,17 @@ public class DataImportScreen implements ActionListener {
 
 		JButton submit = new JButton("View");
 		submit.setBounds(x2, y, width, height);
-		submit.addActionListener(new HIEDBListener(_frame, _fn, _loc, "import",
+		submit.addActionListener(new HIEDBListener(_frame, _login_type, _loc, "import",
 				idb, error));
-		if (!(_fn.equalsIgnoreCase("Administrator"))) {
+		if (!(_login_type.equalsIgnoreCase("Administrator"))) {
 			_frame.getRootPane().setDefaultButton(submit);
 		}
 		_panel.add(submit);
-		if ((_fn.equalsIgnoreCase("Administrator"))) {
+		if ((_login_type.equalsIgnoreCase("Administrator"))) {
 			y = y + 50;
 			JButton submit2 = new JButton("Delete");
 			submit2.setBounds(x2, y, width, height);
-			submit2.addActionListener(new HIEDBListener(_frame, _fn, _loc,
+			submit2.addActionListener(new HIEDBListener(_frame, _login_type, _loc,
 					"delete", idb, error));
 			_panel.add(submit2);
 		}
@@ -219,7 +219,7 @@ public class DataImportScreen implements ActionListener {
 
 		JButton submit = new JButton("Back");
 		submit.setBounds(x, y, width, height);
-		submit.addActionListener(new DataImportScreen(_frame, _fn, _loc));
+		submit.addActionListener(new DataImportScreen(_frame, _login_type, _loc));
 		_frame.getRootPane().setDefaultButton(submit);
 		_panel.add(submit);
 

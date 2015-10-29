@@ -19,7 +19,7 @@ public class AboutScreen implements ActionListener {
 	static int width;
 
 	// User log-on type (subject)
-	static String _fn;
+	static String _login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -38,7 +38,7 @@ public class AboutScreen implements ActionListener {
 		height = 40;
 		width = 160;
 
-		_fn = type;
+		_login_type = type;
 		_loc = location;
 	}
 

@@ -34,8 +34,8 @@ public class PolicyDBScreen implements ActionListener {
 	static int height;
 	static int width;
 
-	// User log-on type (subject)
-	static String _fn;
+	// User log-on login_type (subject)
+	static String _login_login_type;
 
 	// User log-on location (community)
 	static String _loc;
@@ -63,14 +63,14 @@ public class PolicyDBScreen implements ActionListener {
 	/**
 	 * @param f
 	 *            The display frame for the program
-	 * @param fn
-	 *            The user log-on type (subject)
+	 * @param login_type
+	 *            The user log-on login_type (subject)
 	 * @param loc
 	 *            The user log-on location (community)
 	 */
-	public PolicyDBScreen(JFrame f, String fn, String loc) {
+	public PolicyDBScreen(JFrame f, String login_type, String loc) {
 		_frame = f;
-		_fn = fn;
+		_login_login_type = login_type;
 		_loc = loc;
 		height = 40;
 		width = 160;
@@ -80,7 +80,7 @@ public class PolicyDBScreen implements ActionListener {
 
 	/**
 	 * @param f
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param pid
 	 * @param subj
@@ -88,7 +88,7 @@ public class PolicyDBScreen implements ActionListener {
 	 * @param r
 	 * @param w
 	 */
-	public PolicyDBScreen(JFrame f, String fn, String loc, String pid,
+	public PolicyDBScreen(JFrame f, String login_type, String loc, String pid,
 			String subj, String org, boolean r, boolean w) {
 		_frame = f;
 		_pid = pid;
@@ -96,7 +96,7 @@ public class PolicyDBScreen implements ActionListener {
 		_org = org;
 		_r = r;
 		_w = w;
-		_fn = fn;
+		_login_login_type = login_type;
 		height = 40;
 		width = 160;
 		panely = 420;
@@ -106,7 +106,7 @@ public class PolicyDBScreen implements ActionListener {
 
 	/**
 	 * @param frame
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param pid2
 	 * @param sub
@@ -114,10 +114,10 @@ public class PolicyDBScreen implements ActionListener {
 	 * @param read
 	 * @param write
 	 */
-	public PolicyDBScreen(JFrame frame, String fn, String loc, String pid2,
+	public PolicyDBScreen(JFrame frame, String login_type, String loc, String pid2,
 			String sub, String org2, String read, String write) {
 		_frame = frame;
-		_fn = fn;
+		_login_login_type = login_type;
 		_pid = pid2;
 		_subj = sub;
 		_org = org2;
@@ -143,7 +143,7 @@ public class PolicyDBScreen implements ActionListener {
 	/**
 	 * @param addWhere
 	 * @param _frame2
-	 * @param fn
+	 * @param login_type
 	 * @param loc
 	 * @param pid2
 	 * @param sub
@@ -158,14 +158,14 @@ public class PolicyDBScreen implements ActionListener {
 	 * @param next
 	 * @param back
 	 */
-	public PolicyDBScreen(String addWhere, JFrame _frame2, String fn,
+	public PolicyDBScreen(String addWhere, JFrame _frame2, String login_type,
 			String loc, String pid2, String sub, String org2, String read,
 			String write, String tool, String rule, String resp,
 			ArrayList<String> array, int i, boolean next, boolean back) {
 
 		_where = addWhere;
 
-		_fn = fn;
+		_login_login_type = login_type;
 		_loc = loc;
 		height = 40;
 		width = 160;
@@ -360,7 +360,7 @@ public class PolicyDBScreen implements ActionListener {
 		// To Do:
 		JComboBox sdb = new JComboBox();
 		ArrayList<String> sids = Helper
-				.getColumns("Policy_DB", "USERS", "TYPE");
+				.getColumns("Policy_DB", "USERS", "login_type");
 		for (int i = 0; i < sids.size(); i++) {
 			sdb.addItem(sids.get(i));
 		}
@@ -434,7 +434,7 @@ public class PolicyDBScreen implements ActionListener {
 
 		JButton submit = new JButton("Submit");
 		submit.setBounds(x2, y, width, height);
-		submit.addActionListener(new PolicyToDBListener(_frame, _fn, _loc,
+		submit.addActionListener(new PolicyToDBListener(_frame, _login_login_type, _loc,
 				"insert", idb, sdb, orgb, read, write, tool1, tool2, rule1,
 				resp1, resp2, error));
 		_frame.getRootPane().setDefaultButton(submit);
@@ -468,8 +468,8 @@ public class PolicyDBScreen implements ActionListener {
 		// TODO
 
 		JComboBox subjectb = new JComboBox();
-		if (!(_fn.equalsIgnoreCase("physician"))
-				&& !(_fn.equalsIgnoreCase("insurance agent"))) {
+		if (!(_login_login_type.equalsIgnoreCase("physician"))
+				&& !(_login_login_type.equalsIgnoreCase("insurance agent"))) {
 			ArrayList<String> subjects = Helper.getColumns("Policy_DB",
 					"USERS", "ID");
 			for (int i = 0; i < subjects.size(); i++) {
@@ -478,15 +478,15 @@ public class PolicyDBScreen implements ActionListener {
 			subjectb.setBounds(x2, y, width * 2, height);
 			_panel.add(subjectb);
 		} else {
-			JLabel subj = new JLabel(_fn);
+			JLabel subj = new JLabel(_login_login_type);
 			subj.setBounds(x2, y, width * 2, height);
 			_panel.add(subj);
 		}
 		y = y + 50;
 
 		JComboBox orgb = new JComboBox();
-		if (!(_fn.equalsIgnoreCase("physician"))
-				&& !(_fn.equalsIgnoreCase("insurance agent"))) {
+		if (!(_login_login_type.equalsIgnoreCase("physician"))
+				&& !(_login_login_type.equalsIgnoreCase("insurance agent"))) {
 			ArrayList<String> orgs = Helper.getColumns("Policy_DB",
 					"LOCATIONS", "LOCATION");
 			for (int i = 0; i < orgs.size(); i++) {
@@ -554,24 +554,24 @@ public class PolicyDBScreen implements ActionListener {
 		error.setBounds(x2, y + 30, width * 3, height);
 		_panel.add(error);
 
-		if (_fn.equalsIgnoreCase("administrator")) {
+		if (_login_login_type.equalsIgnoreCase("administrator")) {
 			JButton submit1 = new JButton("View");
 			submit1.setBounds(x, y, width, height);
-			submit1.addActionListener(new PolicyToDBListener(_frame, _fn, _loc,
+			submit1.addActionListener(new PolicyToDBListener(_frame, _login_login_type, _loc,
 					"view", idb, subjectb, orgb, read, write, tool1, tool2,
 					rule1, resp1, resp2, error));
 			_panel.add(submit1);
 			JButton submit3 = new JButton("Delete");
 			submit3.setBounds(x + 320, y, width, height);
-			submit3.addActionListener(new PolicyToDBListener(_frame, _fn, _loc,
+			submit3.addActionListener(new PolicyToDBListener(_frame, _login_login_type, _loc,
 					"delete", idb, subjectb, orgb, read, write, tool1, tool2,
 					rule1, resp1, resp2, error));
 			_panel.add(submit3);
-		} else if ((_fn.equalsIgnoreCase("physician"))
-				|| (_fn.equalsIgnoreCase("insurance agent"))) {
+		} else if ((_login_login_type.equalsIgnoreCase("physician"))
+				|| (_login_login_type.equalsIgnoreCase("insurance agent"))) {
 			JButton submit1 = new JButton("View");
 			submit1.setBounds(x, y, width, height);
-			submit1.addActionListener(new PolicyToDBListener(_frame, _fn, _loc,
+			submit1.addActionListener(new PolicyToDBListener(_frame, _login_login_type, _loc,
 					"view", idb, read, write, tool1, tool2, rule1, resp1,
 					resp2, error));
 			_frame.getRootPane().setDefaultButton(submit1);
@@ -579,7 +579,7 @@ public class PolicyDBScreen implements ActionListener {
 		} else {
 			JButton submit1 = new JButton("View");
 			submit1.setBounds(x2, y, width, height);
-			submit1.addActionListener(new PolicyToDBListener(_frame, _fn, _loc,
+			submit1.addActionListener(new PolicyToDBListener(_frame, _login_login_type, _loc,
 					"view", idb, subjectb, orgb, read, write, tool1, tool2,
 					rule1, resp1, resp2, error));
 			_frame.getRootPane().setDefaultButton(submit1);
@@ -695,21 +695,21 @@ public class PolicyDBScreen implements ActionListener {
 
 		JButton submit1 = new JButton("Back");
 		submit1.setBounds(x, y, width, height);
-		submit1.addActionListener(new PolicyDBScreen(_frame, _fn, _loc));
+		submit1.addActionListener(new PolicyDBScreen(_frame, _login_login_type, _loc));
 		_panel.add(submit1);
 
-		if (_fn.equalsIgnoreCase("administrator")) {
+		if (_login_login_type.equalsIgnoreCase("administrator")) {
 			JButton submit2 = new JButton("Update");
 			submit2.setBounds(x + 160, y, width, height);
 			submit2.addActionListener(new PolicyToDBListener(_where, _frame,
-					_fn, _loc, "update", idb, subjectb, orgb, read, write,
+					_login_login_type, _loc, "update", idb, subjectb, orgb, read, write,
 					tool1, tool2, rule1, resp1, resp2, error));
 			_panel.add(submit2);
 
 			JButton submit3 = new JButton("Delete");
 			submit3.setBounds(x + 320, y, width, height);
 			submit3.addActionListener(new PolicyToDBListener(_where, _frame,
-					_fn, _loc, "delete", idb, subjectb, orgb, read, write,
+					_login_login_type, _loc, "delete", idb, subjectb, orgb, read, write,
 					tool1, tool2, rule1, resp1, resp2, error));
 			_panel.add(submit3);
 
@@ -718,7 +718,7 @@ public class PolicyDBScreen implements ActionListener {
 				JButton next = new JButton("Next Policy");
 				next.setBounds(x2, y, width, height);
 				next.addActionListener(new PolicyToDBListener(_where, _frame,
-						_fn, _loc, "next", _array, _i, error));
+						_login_login_type, _loc, "next", _array, _i, error));
 				_panel.add(next);
 			}
 
@@ -728,7 +728,7 @@ public class PolicyDBScreen implements ActionListener {
 				int b = _i - 16;
 				// System.out.println(b);
 				back.addActionListener(new PolicyToDBListener(_where, _frame,
-						_fn, _loc, "next", _array, b, error));
+						_login_login_type, _loc, "next", _array, b, error));
 				_panel.add(back);
 			}
 		}
