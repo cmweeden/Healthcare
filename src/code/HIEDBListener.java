@@ -565,8 +565,13 @@ public class HIEDBListener implements ActionListener {
 
 			String decryptedMessage = "Unable to decrypt";
 
-			for(int role=_role_index; role>=0; role--){
-				String dkey = createXML(Integer.valueOf(decryptionID), _role_list.get(role));
+			for(int role_ind = _role_index; role_ind>=0; role_ind--){
+				String role = _login_type;
+				if(_role_list.get(role_ind).equalsIgnoreCase("Insurance Agent")){	// Pump up permissions, because Insurance Agent & Physician
+					role = "Physician";						// Have equal permissions.
+				}
+				String dkey = createXML(Integer.valueOf(decryptionID), role);
+				System.out.println(dkey);
 				byte[] key;
 				try {
 					key = (dkey).getBytes("UTF-8");
@@ -775,6 +780,7 @@ public class HIEDBListener implements ActionListener {
 			doc.appendChild(resultsE);
 
 			Element node = doc.createElement("SUBJECT");
+			
 			node.appendChild(doc.createTextNode(login_type));
 			resultsE.appendChild(node);
 
