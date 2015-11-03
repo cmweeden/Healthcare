@@ -493,35 +493,30 @@ public class DataExportScreen implements ActionListener {
 		_panel.add(idb);
 
 		y = y + 50;
-		JTextField nameText = new JTextField(20);
-		JTextField lnameText = new JTextField(20);
-		JTextField ageText = new JTextField(20);
+		JTextField firstNameText = new JTextField(20);
+		JTextField lastNameText = new JTextField(20);
+		JTextField dobText = new JTextField(20);
 		JComboBox insBox = new JComboBox();
 
 		if ((!(_login_type.equals("physician"))) && (!(_login_type.equals("insurance")))) {
 
 			if (!(_login_type.equals("researcher"))) {
 
-				nameText.setBounds(x2, y, width, height);
+				firstNameText.setBounds(x2, y, width, height);
+				firstNameText.setEditable(true);
 
-				nameText.setEditable(true);
-
-				_panel.add(nameText);
-
+				_panel.add(firstNameText);
 				y = y + 50;
 
-				lnameText.setBounds(x2, y, width, height);
+				lastNameText.setBounds(x2, y, width, height);
+				lastNameText.setEditable(true);
 
-				lnameText.setEditable(true);
-
-				_panel.add(lnameText);
-
+				_panel.add(lastNameText);
 				y = y + 50;
 			}
 
-			ageText.setBounds(x2, y, width, height);
-			_panel.add(ageText);
-
+			dobText.setBounds(x2, y, width, height);
+			_panel.add(dobText);
 			y = y + 50;
 
 			ArrayList<String> insAgents = Helper.getColumns("Policy_DB",
@@ -546,13 +541,13 @@ public class DataExportScreen implements ActionListener {
 
 			submit.setBounds(x, y, width, height);
 			submit.addActionListener(new HIEDBListener(_frame, _login_type, _loc,
-					"view", idb, ageText, insBox, error));
+					"view", idb, dobText, insBox, error));
 			_panel.add(submit);
 
 		} else {
 			submit.setBounds(x, y, width, height);
 			submit.addActionListener(new HIEDBListener(_frame, _login_type, _loc,
-					"view", idb, nameText, lnameText, ageText, insBox, error));
+					"view", idb, firstNameText, lastNameText, dobText, insBox, error));
 			_panel.add(submit);
 		}
 		_frame.getRootPane().setDefaultButton(submit);

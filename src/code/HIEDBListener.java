@@ -50,6 +50,16 @@ public class HIEDBListener implements ActionListener {
 	static int height;
 	static int width;
 
+	// Enumeration of user roles
+	static ArrayList<String> _role_list = new ArrayList<String>() {{
+		add("Researcher");
+		add("Administrator");
+		add("Insurance Agent");
+		add("Physician");
+	}};
+
+	static int _role_index;
+
 	// User log-on type (subject)
 	static String _login_type;
 
@@ -101,6 +111,7 @@ public class HIEDBListener implements ActionListener {
 		// From DataExportScreen view patient data when not researcher
 		_frame = f;
 		_login_type = login_type;
+		_role_index = _role_list.indexOf(_login_type);
 		_pid = pid;
 		_first = firstname;
 		_last = lastname;
@@ -129,6 +140,7 @@ public class HIEDBListener implements ActionListener {
 		// From DataExportScreen view patient data when researcher
 		_frame = f;
 		_login_type = login_type;
+		_role_index = _role_list.indexOf(_login_type);
 		_pid = pid;
 		_birth = dob;
 		_ins = insurance;
@@ -152,6 +164,7 @@ public class HIEDBListener implements ActionListener {
 		// From data import screen when view imported data or delete db element
 		_frame = f;
 		_login_type = login_type;
+		_role_index = _role_list.indexOf(_login_type);
 		_did = did;
 		_action = action;
 		_loc = loc;
@@ -177,6 +190,7 @@ public class HIEDBListener implements ActionListener {
 		// From DataExportScreen when is data export
 		_frame = f;
 		_login_type = login_type;
+		_role_index = _role_list.indexOf(_login_type);
 		_pidS = pid;
 		_first = firstname;
 		_last = lastname;
@@ -206,6 +220,7 @@ public class HIEDBListener implements ActionListener {
 		_where = where;
 		_frame = frame;
 		_login_type = login_type;
+		_role_index = _role_list.indexOf(_login_type);
 		_action = action;
 		_array = array;
 		_i = i;
@@ -468,7 +483,7 @@ public class HIEDBListener implements ActionListener {
 				// ckey = "Also blank for now";
 				//
 				// }
-				ckey = createXML(tid);
+				ckey = createXML(tid, _login_type);
 
 				byte[] key;
 				try {
@@ -486,22 +501,16 @@ public class HIEDBListener implements ActionListener {
 					byte[] encodedBytes = Base64.encodeBase64(byteCipherText);
 					ctext = new String(encodedBytes);
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvalidKeyException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalBlockSizeException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (BadPaddingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -544,8 +553,8 @@ public class HIEDBListener implements ActionListener {
 			// Attach policies as credentials to view
 
 		} else if (_action.equalsIgnoreCase("import")) {
-			String did = (String) _did.getSelectedItem();
-			String where = "ID = " + did;
+			String decryptionID = (String) _did.getSelectedItem();
+			String where = "ID = " + decryptionID;
 			HIEDatabase hie = new HIEDatabase();
 			ArrayList<String> array = hie.view(where);
 
@@ -554,64 +563,51 @@ public class HIEDBListener implements ActionListener {
 			String pol = array.get(3);
 			String ctext = array.get(4);
 
-			String dkey = createXML(Integer.valueOf(did));
+			String decryptedMessage = "Unable to decrypt";
 
-			// if ((_login_type.equalsIgnoreCase("Researcher"))) {
-			// dkey = "Blank for now";
-			//
-			// } else if ((_login_type.equals("Physician")) ||
-			// (_login_type.equals("Insurance"))) {
-			// dkey = did + " " + _docId + " " + _loc;
-			//
-			// } else {
-			// dkey = "Also blank for now";
-			//
-			// }
+			for(int role=_role_index; role>=0; role--){
+				String dkey = createXML(Integer.valueOf(decryptionID), _role_list.get(role));
+				byte[] key;
+				try {
+					key = (dkey).getBytes("UTF-8");
 
-			String dtext = "Unable to decrypt";
-			byte[] key;
-			try {
-				key = (dkey).getBytes("UTF-8");
+					MessageDigest sha = MessageDigest.getInstance("SHA-1");
+					key = sha.digest(key);
+					key = Arrays.copyOf(key, 16); // use only first 128 bit
 
-				MessageDigest sha = MessageDigest.getInstance("SHA-1");
-				key = sha.digest(key);
-				key = Arrays.copyOf(key, 16); // use only first 128 bit
+					SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+					Cipher cipher = Cipher.getInstance("AES");
 
-				SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-				Cipher cipher = Cipher.getInstance("AES");
+					cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+					byte[] byteArray = Base64.decodeBase64(ctext.getBytes());
 
-				cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-				byte[] byteArray = Base64.decodeBase64(ctext.getBytes());
+					byte[] byteDecryptedText = cipher.doFinal(byteArray);
 
-				byte[] byteDecryptedText = cipher.doFinal(byteArray);
-				dtext = new String(byteDecryptedText);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalBlockSizeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (BadPaddingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidKeyException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchPaddingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					decryptedMessage = new String(byteDecryptedText);	
+					if (checkDecrypt(decryptedMessage)) {
+						break;
+					}
+
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					e.printStackTrace();
+				} catch (InvalidKeyException e) {
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e) {
+					e.printStackTrace();
+				}
 			}
 			// decrypt
 			String message;
 			String eol = System.getProperty("line.separator");
 
-			if ((checkDecrypt(dtext))) {
-
-				message = dtext;
-
+			if (checkDecrypt(decryptedMessage)) {
+				message = decryptedMessage;
 			}
 
 			else {
@@ -630,7 +626,7 @@ public class HIEDBListener implements ActionListener {
 			}
 
 			DataImportScreen screen = new DataImportScreen(_frame, _login_type, _loc,
-					did, message);
+					decryptionID, message);
 			screen.createFrame(2);
 
 		} else if (_action.equalsIgnoreCase("delete")) {
@@ -768,7 +764,7 @@ public class HIEDBListener implements ActionListener {
 	 * @param tid
 	 * @return
 	 */
-	public String createXML(int tid) {
+	public String createXML(int tid, String login_type) {
 		String xml = "";
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
@@ -779,7 +775,7 @@ public class HIEDBListener implements ActionListener {
 			doc.appendChild(resultsE);
 
 			Element node = doc.createElement("SUBJECT");
-			node.appendChild(doc.createTextNode(_login_type));
+			node.appendChild(doc.createTextNode(login_type));
 			resultsE.appendChild(node);
 
 			node = doc.createElement("OBJECT");

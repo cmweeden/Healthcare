@@ -113,7 +113,7 @@ public class DataImportScreen implements ActionListener {
 
 		switch (action) {
 		case 0:
-			// Show something about not a valid screen
+			// TODO Show something about not a valid screen
 			break;
 		case 1:
 			choosePatient();
