@@ -126,7 +126,7 @@ public class MainScreen implements ActionListener {
 		JMenu menuPatient = new JMenu("Patient");
 		_menuBar.add(menuPatient);
 		
-		JMenuItem addPatient, viewPatient, addPolicy, viewPolicy, addUser, viewUser, addExternal, viewExternal, addAbout;
+		JMenuItem addPatient, viewPatient, addPolicy, viewPolicy, addUser, viewUser, addExternal, viewExternal, addAbout, mappings, hierarchies;
 		if (_login_type.equalsIgnoreCase("administrator")) {
 			addPatient = new JMenuItem("Add");
 			addPatient.addActionListener(new PatientDBScreen(_frame, _login_type, _location));
@@ -166,12 +166,20 @@ public class MainScreen implements ActionListener {
 			addPolicy.addActionListener(new PolicyDBScreen(_frame, _login_type, _location));
 			menuPolicy.add(addPolicy);
 			viewPolicy = new JMenuItem("View, Update, or Delete");
+			mappings = new JMenuItem("Mappings");
+			hierarchies = new JMenuItem("Hierarchy Assignments");
 		} else {
 			viewPolicy = new JMenuItem("View");
+			mappings = new JMenuItem("Mappings");
+			hierarchies = new JMenuItem("Hierarchy Assignments");
 		}
 
 		viewPolicy.addActionListener(new PolicyDBScreen(_frame, _login_type, _location));
+		mappings.addActionListener(new MappingsScreen(_frame, _login_type, _location));
+		hierarchies.addActionListener(new HierarchyScreen(_frame, _login_type, _location));
 		menuPolicy.add(viewPolicy);
+		menuPolicy.add(mappings);
+		menuPolicy.add(hierarchies);
 
 		JMenu menuExternal = new JMenu("External");
 		_menuBar.add(menuExternal);

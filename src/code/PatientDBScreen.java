@@ -362,7 +362,6 @@ public class PatientDBScreen implements ActionListener {
 
 		} else if (arg0.getActionCommand().equals("View")) {
 			action = 1;
-
 		} else {
 			action = 3;
 		}
