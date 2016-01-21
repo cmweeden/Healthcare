@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,13 +20,13 @@ public class HierarchyScreen implements ActionListener {
 	// User log-on type (subject)
 	static String _login_type;
 	// User log-on location (community)
-	static String _loc;
+	static String _location;
 	public HierarchyScreen(JFrame f, String type, String loc){
 		_frame = f;
 		_login_type = type;
 		height = 40;
 		width = 160;
-		_loc = loc;
+		_location = loc;
 		//_pol = false;
 		//_next = false;
 		//_backB = false;
@@ -36,7 +37,7 @@ public class HierarchyScreen implements ActionListener {
 	}
 	public void createFrame(){
 		_frame.getContentPane().removeAll();
-		_frame.setTitle("Create Mappings");
+		_frame.setTitle("Hierarchy Assignment");
 		_panel = new ImagePanel();
 
 		_frame.add(_panel);
@@ -48,25 +49,29 @@ public class HierarchyScreen implements ActionListener {
 		ArrayList<String> pids = Helper.getColumns("Policy_DB", "LOCATIONS", "LOCATION");
 		int x = 10;
 		int y = 10;
-		JLabel facility = new JLabel("Facility");
+		JLabel facility = new JLabel(_location);
 		JComboBox facilityBox = new JComboBox();
-		for (int j=0; j<pids.size(); j++){
-			facilityBox.addItem(pids.get(j));
-		}
-		facility.setBounds(x, y, width, height);
-		facilityBox.setBounds(x+105, y, width, height);
-		for (int i=0; i<10; i++){
-		JComboBox logintypeBox = new JComboBox();
-		for (int j=0; j<pids.size(); j++){
-			logintypeBox.addItem(pids.get(j));
-		}
-		logintypeBox.setBounds(x+105, y+30+i*30, width, height);
-		JLabel logintype = new JLabel("Logintype"+""+(i+1));
-		logintype.setBounds(x, y+30+i*30, width, height);
-		_panel.add(logintype);
-		_panel.add(logintypeBox);
+		facility.setBounds(x+125, y, width, height);
+		ArrayList<JComboBox> logintypeBoxArray = new ArrayList<JComboBox>();
+		ArrayList<String> selectedTable = Helper.getColumns("Policy_DB", _location.replaceAll("\\s",""), "Position");
+		System.out.println("SIZE OF TABLE IS: " + selectedTable.size());
+		//selectedTable.remove(0);
+		for (int i=0; i<selectedTable.size()-1; i++){
+			logintypeBoxArray.add(new JComboBox());
+			for (int j=0; j<selectedTable.size(); j++){
+				logintypeBoxArray.get(i).addItem(selectedTable.get(j));
+			}
+			logintypeBoxArray.get(i).setBounds(x+105, y+30+i*30, width, height);
+			JLabel logintype = new JLabel("Rank"+" "+(i+1));
+			logintype.setBounds(x, y+30+i*30, width, height);
+			_panel.add(logintype);
+			_panel.add(logintypeBoxArray.get(i));
 		}
 		_panel.add(facility);
 		_panel.add(facilityBox);
+		JButton submitButton = new JButton("Submit Hierarcy");
+		submitButton.addActionListener(new SubmitHierarchyListener(logintypeBoxArray, _location));
+		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
+		_panel.add(submitButton);
 	}
 }

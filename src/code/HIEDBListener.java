@@ -3,13 +3,20 @@ package code;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,6 +32,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,11 +45,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class HIEDBListener implements ActionListener {
 
@@ -297,7 +314,7 @@ public class HIEDBListener implements ActionListener {
 					_error.setText("No matching patients found");
 				}
 
-			} else if (_login_type.equals("Physician")) {
+			} else if (_login_type.equals("Physician") || _login_type.equals("Surgeon") || _login_type.equals("Nurse") || _login_type.equals("Receptionist")) {
 
 				// TODO Promulgate the change to add ' ' around the _login_type
 				// everywhere this is used.
@@ -483,7 +500,7 @@ public class HIEDBListener implements ActionListener {
 				// ckey = "Also blank for now";
 				//
 				// }
-				ckey = createXML(tid, _login_type);
+				ckey = createXML(tid, _login_type, _loc);
 
 				byte[] key;
 				try {
@@ -562,49 +579,92 @@ public class HIEDBListener implements ActionListener {
 			String ckey = array.get(2);
 			String pol = array.get(3);
 			String ctext = array.get(4);
-
+			ArrayList<String> yourLocationTypes = new ArrayList<String>();
+			String sql = "SELECT " + _loc.replaceAll("\\s","") + " FROM MAPPINGS";
+			getPositionAtLocation(sql,yourLocationTypes);
+			System.out.println(yourLocationTypes);
 			String decryptedMessage = "Unable to decrypt";
-
-			for(int role_ind = _role_index; role_ind>=0; role_ind--){
-				String role = _role_list.get(role_ind);
-				if(role.equalsIgnoreCase("Insurance Agent")){	// Pump up permissions, because Insurance Agent & Physician
-					role = "Physician";						// Have equal permissions.
+			InputSource source = new InputSource(new StringReader(ckey));
+			ArrayList<String> allLocations = new ArrayList<String>();
+			allLocations.add("ResearchFacility");
+			allLocations.add("InsuranceOffice");
+			allLocations.add("Hospital");
+			allLocations.add("Clinic");
+			/*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db;
+			String tempLocation = null;
+			//ArrayList<String>
+			try {
+				db = dbf.newDocumentBuilder();
+				Document document = db.parse(source);
+				XPathFactory xpathFactory = XPathFactory.newInstance();
+				XPath xpath = xpathFactory.newXPath();
+				tempLocation = xpath.evaluate("/KEY/COMMUNITY", document);
+			} catch (ParserConfigurationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			/*sql = "SELECT " + tempLocation.replaceAll("\\s","") + " FROM MAPPINGS";
+			ArrayList<String> theirLocationTypes = new ArrayList<String>();
+			getMappings(sql, theirLocationTypes);*/
+			int roleIndex = 0;
+			for(int i=0; i<yourLocationTypes.size();i++){
+				if (_login_type.equals(yourLocationTypes.get(i))){
+					roleIndex=i;
 				}
-				String dkey = createXML(Integer.valueOf(decryptionID), role);
-				System.out.println(dkey);
-				byte[] key;
-				try {
-					key = (dkey).getBytes("UTF-8");
+			}
+			for(int i=0; i<allLocations.size(); i++){
+				sql = "SELECT " + allLocations.get(i) + " FROM MAPPINGS";
+				ArrayList<String> theirLocationTypes = new ArrayList<String>();
+				getPositionAtLocation(sql, theirLocationTypes);
+				for(int j=roleIndex; j<theirLocationTypes.size(); j++){
+					String role = theirLocationTypes.get(j);
+				
+					String dkey = createXML(Integer.valueOf(decryptionID), role, allLocations.get(i));
+					System.out.println(dkey);
+					byte[] key;
+					try {
+						key = (dkey).getBytes("UTF-8");
 
-					MessageDigest sha = MessageDigest.getInstance("SHA-1");
-					key = sha.digest(key);
-					key = Arrays.copyOf(key, 16); // use only first 128 bit
+						MessageDigest sha = MessageDigest.getInstance("SHA-1");
+						key = sha.digest(key);
+						key = Arrays.copyOf(key, 16); // use only first 128 bit
 
-					SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-					Cipher cipher = Cipher.getInstance("AES");
+						SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+						Cipher cipher = Cipher.getInstance("AES");
 
-					cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-					byte[] byteArray = Base64.decodeBase64(ctext.getBytes());
+						cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+						byte[] byteArray = Base64.decodeBase64(ctext.getBytes());
 
-					byte[] byteDecryptedText = cipher.doFinal(byteArray);
+						byte[] byteDecryptedText = cipher.doFinal(byteArray);
 
-					decryptedMessage = new String(byteDecryptedText);	
-					if (checkDecrypt(decryptedMessage)) {
-						break;
+						decryptedMessage = new String(byteDecryptedText);	
+						if (checkDecrypt(decryptedMessage)) {
+							break;
+						}
+
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (NoSuchAlgorithmException e) {
+						e.printStackTrace();
+					} catch (IllegalBlockSizeException e) {
+						e.printStackTrace();
+					} catch (BadPaddingException e) {
+						e.printStackTrace();
+					} catch (InvalidKeyException e) {
+						e.printStackTrace();
+					} catch (NoSuchPaddingException e) {
+						e.printStackTrace();
 					}
-
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				} catch (IllegalBlockSizeException e) {
-					e.printStackTrace();
-				} catch (BadPaddingException e) {
-					e.printStackTrace();
-				} catch (InvalidKeyException e) {
-					e.printStackTrace();
-				} catch (NoSuchPaddingException e) {
-					e.printStackTrace();
 				}
 			}
 			// decrypt
@@ -671,7 +731,34 @@ public class HIEDBListener implements ActionListener {
 		System.out.println("Unable to decrypt: " + message);
 		return false;
 	}
-
+	private ArrayList<String> getPositionAtLocation(String sql, ArrayList<String> mappingsList){
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Connection c;
+		try {
+			c = DriverManager
+					.getConnection("jdbc:sqlite:Policy_DB.db");
+			c.setAutoCommit(false);
+			Statement s = c.createStatement ();
+			ResultSet rs = s.executeQuery(sql);
+			int count = 0;
+			while (rs.next ())
+			   {
+				mappingsList.add(rs.getString(1));
+			   }
+			s.close();
+			c.close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return mappingsList;
+		
+	}
 	/**
 	 * @param p
 	 * @param f
@@ -769,7 +856,7 @@ public class HIEDBListener implements ActionListener {
 	 * @param tid
 	 * @return
 	 */
-	public String createXML(int tid, String login_type) {
+	public String createXML(int tid, String login_type, String loc) {
 		String xml = "";
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
@@ -789,7 +876,7 @@ public class HIEDBListener implements ActionListener {
 			resultsE.appendChild(node);
 
 			node = doc.createElement("COMMUNITY");
-			node.appendChild(doc.createTextNode(_loc));
+			node.appendChild(doc.createTextNode(loc));
 			resultsE.appendChild(node);
 
 			DOMSource domSource = new DOMSource(doc);
