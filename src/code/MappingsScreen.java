@@ -3,8 +3,11 @@ package code;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,11 +50,43 @@ public class MappingsScreen implements ActionListener{
 	public void addComponents(){
 		_panel.setLayout(null);
 		ArrayList<String> pids = Helper.getColumns("Policy_DB", "LOCATIONS", "LOCATION");
+		HashMap<String, Set<String>> checkBoxMap = new HashMap<String,Set<String>>();
+		
 		int x = 10;
 		int y = 10;
 		//Code for left columns
-		JLabel facility = new JLabel("Facility");
-		JLabel secondFacility = new JLabel("Facility2");
+		System.out.println(_loc);
+		JLabel facility = new JLabel("Your Facility is: " + _loc);
+		facility.setBounds(x, y, width+100, height);
+		JLabel logintype = new JLabel("Role to map: ");
+		logintype.setBounds(x, y+50, width, height);
+		JComboBox logintypebox = new JComboBox();
+		logintypebox.setBounds(x+125, y+50, width, height);
+		JComboBox facilitybox = new JComboBox();
+		facilitybox.setBounds(x+300, y, width, height);
+		for (int j=0; j<pids.size(); j++){
+			facilitybox.addItem(pids.get(j));
+		}
+		ArrayList<String> selectedTable = Helper.getColumns("Policy_DB", _loc, "Position");
+	        
+	        for (int j=0; j<selectedTable.size(); j++){
+	        	logintypebox.addItem(selectedTable.get(j));
+	        }
+	        
+		JButton submitButton = new JButton("Submit Mappings");
+		//submitButton.addActionListener(new SubmitListener(listOfFacilityBoxes, listOfListsOfComboBoxes ));
+		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
+		MappingsComboBoxesListener classWithCheckBoxes = new MappingsComboBoxesListener(_panel,checkBoxMap,facilitybox, logintypebox, width, height);
+		facilitybox.addActionListener((ActionListener) classWithCheckBoxes);
+		logintypebox.addActionListener(new MappingPositionBoxActionListener(_panel, logintypebox, facilitybox, checkBoxMap, classWithCheckBoxes, _loc));
+		_panel.add(facilitybox);
+		_panel.add(facility);
+		_panel.add(submitButton);
+		_panel.add(logintype);
+		_panel.add(logintypebox);
+		
+		
+		/*JLabel secondFacility = new JLabel("Facility2");
 		JLabel thirdFacility = new JLabel("Facility3");
 		JLabel fourthFacility = new JLabel("Facility4");
 		JComboBox facilityBox = new JComboBox();
@@ -86,7 +121,6 @@ public class MappingsScreen implements ActionListener{
 			secondComboBoxArray.get(i).setBounds(x+300+105, y+30+i*30, width, height);
 			thirdComboBoxArray.get(i).setBounds(x+105+300+300, y+30+i*30, width, height);
 			fourthComboBoxArray.get(i).setBounds(x+300+105+300+300, y+30+i*30, width, height);
-			JLabel logintype = new JLabel("Logintype"+""+(i+1));
 			JLabel secondlogintype = new JLabel("Logintype"+""+(i+1));
 			JLabel thirdlogintype = new JLabel("Logintype"+""+(i+1));
 			JLabel fourthlogintype = new JLabel("Logintype"+""+(i+1));
@@ -130,6 +164,7 @@ public class MappingsScreen implements ActionListener{
 		_panel.add(thirdfacilityBox);
 		_panel.add(fourthFacility);
 		_panel.add(fourthfacilityBox);
+		*/
 		
 	}
 }

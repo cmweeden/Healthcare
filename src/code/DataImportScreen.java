@@ -212,6 +212,8 @@ public class DataImportScreen implements ActionListener {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setPreferredSize(new Dimension(490, 250));
 		scroll.setBounds(x, y, 490, 250);
+		data.setWrapStyleWord(true);
+		data.setLineWrap(true);
 		data.setEditable(false);
 		_panel.add(scroll);
 

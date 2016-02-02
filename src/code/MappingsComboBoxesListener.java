@@ -2,34 +2,93 @@ package code;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MappingsComboBoxesListener implements ActionListener {
-	JLabel _facility; 
-	ArrayList<JComboBox> _FacilityBox;
+public class MappingsComboBoxesListener implements ActionListener, ItemListener {
+	ArrayList<JCheckBox> _checkboxes; 
+	JComboBox _FacilityBox;
+	 JComboBox _loginTypeBox;
+	 HashMap<String, Set<String>> _checkBoxHashMap;
 	JPanel _panel;
-	public MappingsComboBoxesListener(JPanel panel, JLabel facility, ArrayList<JComboBox> FacilityBox) {
+	int _height;
+	int _width;
+	public MappingsComboBoxesListener(JPanel panel, HashMap<String, Set<String>> checkBoxMap, JComboBox FacilityBox, JComboBox loginTypeBox, int width, int height) {
 		_panel = panel;
-		_facility = facility;
 		_FacilityBox = FacilityBox;
+		_height = height;
+		_width = width;
+		_loginTypeBox = loginTypeBox;
+		_checkBoxHashMap = checkBoxMap;
 	}
 	public void actionPerformed(ActionEvent e) {
-		for (int i=0; i<4; i++){
-			_FacilityBox.get(i).removeAllItems();
-		}
 		JComboBox combo = (JComboBox)e.getSource();
-        String selectedItem = (String)combo.getSelectedItem();
+        makeCheckBoxes(combo);
+	}
+	public void makeCheckBoxes(JComboBox combo){
+		if (_checkboxes!=null){
+			for (int i=0; i<_checkboxes.size(); i++){
+				_panel.remove(_checkboxes.get(i));
+			}
+		}
+		_panel.revalidate();
+	    _panel.repaint();
+		String selectedItem = (String)combo.getSelectedItem();
         ArrayList<String> selectedTable = Helper.getColumns("Policy_DB", selectedItem.replaceAll("\\s",""), "Position");
-        for (int i=0; i<4; i++){
+        _checkboxes = new ArrayList<JCheckBox>(selectedTable.size());
         	for (int j=0; j<selectedTable.size(); j++){
-        		_FacilityBox.get(i).addItem(selectedTable.get(j));
+        		JCheckBox checkBox = new JCheckBox(selectedTable.get(j));
+        		checkBox.setBounds(10+300, 10 + j*40, _width, _height);
+        		checkBox.addItemListener(this);
+        		_checkboxes.add(checkBox);
+        		_panel.add(checkBox);
         	}
-        }
       _panel.revalidate();
       _panel.repaint();
 	}
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getStateChange() == ItemEvent.SELECTED){
+			Object source = e.getItemSelectable();
+			for (int i=0; i<_checkboxes.size(); i++){
+			 
+				if (source == _checkboxes.get(i)){
+					if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem())){
+						Set<String> temp = _checkBoxHashMap.get(_loginTypeBox.getSelectedItem());
+						temp.add(_checkboxes.get(i).getText());
+						_checkBoxHashMap.put((String) _loginTypeBox.getSelectedItem(), temp);
+					}
+					else{
+						Set<String> hashValueArray = new TreeSet<String>();
+						hashValueArray.add(_checkboxes.get(i).getText());
+						_checkBoxHashMap.put((String) _loginTypeBox.getSelectedItem(), hashValueArray);
+					}
+				}
+			}
+		}
+		
+		else{
+			Object source = e.getItemSelectable();
+			for (int i=0; i<_checkboxes.size(); i++){
+			 
+				if (source == _checkboxes.get(i)){
+					if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem())){
+						_checkBoxHashMap.get( _loginTypeBox.getSelectedItem() ).remove( _checkboxes.get(i).getText() );
+					}
+				}
+			}
+		}
+		System.out.println("ITEMSTATECHANGED: Key is: "+ _loginTypeBox.getSelectedItem() + " And Value: "+ _checkBoxHashMap.get(_loginTypeBox.getSelectedItem()));
+		
+	}
+	
+	
 }
