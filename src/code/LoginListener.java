@@ -70,8 +70,8 @@ public class LoginListener implements ActionListener {
 		String user = _name.getText();
 		String pass = _pass.getText();
 
-		if (_login_type.equalsIgnoreCase("Administrator")) {
-			if ((user.equalsIgnoreCase("admin")) && (pass.equals("admin"))) {
+		if (_login_type.contains("Admin")) {
+			if ((user.equals("hadmin") || user.equals("cadmin")||user.equals("radmin")||user.equals("iadmin")) && (pass.equals("admin"))) {
 				MainScreen page = new MainScreen(_frame, _login_type, location);
 				page.actionPerformed(null);
 			} else {

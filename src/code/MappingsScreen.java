@@ -54,7 +54,6 @@ public class MappingsScreen implements ActionListener{
 		
 		int x = 10;
 		int y = 10;
-		//Code for left columns
 		System.out.println(_loc);
 		JLabel facility = new JLabel("Your Facility is: " + _loc);
 		facility.setBounds(x, y, width+100, height);
@@ -73,8 +72,8 @@ public class MappingsScreen implements ActionListener{
 	        	logintypebox.addItem(selectedTable.get(j));
 	        }
 	        
-		JButton submitButton = new JButton("Submit Mappings");
-		//submitButton.addActionListener(new SubmitListener(listOfFacilityBoxes, listOfListsOfComboBoxes ));
+		JButton submitButton = new JButton("Submit");
+		submitButton.addActionListener(new SubmitListener( checkBoxMap));
 		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
 		MappingsComboBoxesListener classWithCheckBoxes = new MappingsComboBoxesListener(_panel,checkBoxMap,facilitybox, logintypebox, width, height);
 		facilitybox.addActionListener((ActionListener) classWithCheckBoxes);
@@ -84,87 +83,6 @@ public class MappingsScreen implements ActionListener{
 		_panel.add(submitButton);
 		_panel.add(logintype);
 		_panel.add(logintypebox);
-		
-		
-		/*JLabel secondFacility = new JLabel("Facility2");
-		JLabel thirdFacility = new JLabel("Facility3");
-		JLabel fourthFacility = new JLabel("Facility4");
-		JComboBox facilityBox = new JComboBox();
-		JComboBox secondfacilityBox = new JComboBox();
-		JComboBox thirdfacilityBox = new JComboBox();
-		JComboBox fourthfacilityBox = new JComboBox();
-		ArrayList<String> listOfPositions= new ArrayList<String>();
-		for (int j=0; j<pids.size(); j++){
-			facilityBox.addItem(pids.get(j));
-			secondfacilityBox.addItem(pids.get(j));
-			thirdfacilityBox.addItem(pids.get(j));
-			fourthfacilityBox.addItem(pids.get(j));
-		}
-		facility.setBounds(x, y, width, height);
-		facilityBox.setBounds(x+105, y, width, height);
-		secondFacility.setBounds(x+300, y, width, height);
-		secondfacilityBox.setBounds(x+300+105, y, width, height);
-		thirdFacility.setBounds(x+300+300, y, width, height);
-		thirdfacilityBox.setBounds(x+105+300+300, y, width, height);
-		fourthFacility.setBounds(x+300+300+300, y, width, height);
-		fourthfacilityBox.setBounds(x+300+300+300+105, y, width, height);
-		ArrayList<JComboBox> ComboBoxArray = new ArrayList<JComboBox>();
-		ArrayList<JComboBox> secondComboBoxArray = new ArrayList<JComboBox>();
-		ArrayList<JComboBox> thirdComboBoxArray = new ArrayList<JComboBox>();
-		ArrayList<JComboBox> fourthComboBoxArray = new ArrayList<JComboBox>();
-		for (int i=0; i<4; i++){
-			ComboBoxArray.add(new JComboBox());
-			secondComboBoxArray.add(new JComboBox());
-			thirdComboBoxArray.add(new JComboBox());
-			fourthComboBoxArray.add(new JComboBox());
-			ComboBoxArray.get(i).setBounds(x+105, y+30+i*30, width, height);
-			secondComboBoxArray.get(i).setBounds(x+300+105, y+30+i*30, width, height);
-			thirdComboBoxArray.get(i).setBounds(x+105+300+300, y+30+i*30, width, height);
-			fourthComboBoxArray.get(i).setBounds(x+300+105+300+300, y+30+i*30, width, height);
-			JLabel secondlogintype = new JLabel("Logintype"+""+(i+1));
-			JLabel thirdlogintype = new JLabel("Logintype"+""+(i+1));
-			JLabel fourthlogintype = new JLabel("Logintype"+""+(i+1));
-			logintype.setBounds(x, y+30+i*30, width, height);
-			secondlogintype.setBounds(x+300, y+30+i*30, width, height);
-			thirdlogintype.setBounds(x+300+300, y+30+i*30, width, height);
-			fourthlogintype.setBounds(x+300+300+300, y+30+i*30, width, height);
-		
-			_panel.add(logintype);
-			_panel.add(ComboBoxArray.get(i));
-			_panel.add(secondlogintype);
-			_panel.add(secondComboBoxArray.get(i));
-			_panel.add(thirdlogintype);
-			_panel.add(thirdComboBoxArray.get(i));
-			_panel.add(fourthlogintype);
-			_panel.add(fourthComboBoxArray.get(i));
-		}
-		facilityBox.addActionListener((ActionListener) new MappingsComboBoxesListener(_panel, facility, ComboBoxArray));
-		secondfacilityBox.addActionListener((ActionListener) new MappingsComboBoxesListener(_panel, secondFacility, secondComboBoxArray));
-		thirdfacilityBox.addActionListener((ActionListener) new MappingsComboBoxesListener(_panel, thirdFacility, thirdComboBoxArray));
-		fourthfacilityBox.addActionListener((ActionListener) new MappingsComboBoxesListener(_panel, fourthFacility, fourthComboBoxArray));
-		ArrayList<JComboBox> listOfFacilityBoxes = new ArrayList<JComboBox>();
-		listOfFacilityBoxes.add(facilityBox);
-		listOfFacilityBoxes.add(secondfacilityBox);
-		listOfFacilityBoxes.add(thirdfacilityBox);
-		listOfFacilityBoxes.add(fourthfacilityBox);
-		ArrayList< ArrayList<JComboBox> > listOfListsOfComboBoxes = new ArrayList< ArrayList<JComboBox> >();
-		listOfListsOfComboBoxes.add(ComboBoxArray);
-		listOfListsOfComboBoxes.add(secondComboBoxArray);
-		listOfListsOfComboBoxes.add(thirdComboBoxArray);
-		listOfListsOfComboBoxes.add(fourthComboBoxArray);
-		JButton submitButton = new JButton("Submit Mappings");
-		submitButton.addActionListener(new SubmitListener(listOfFacilityBoxes, listOfListsOfComboBoxes ));
-		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
-		_panel.add(submitButton);
-		_panel.add(facility);
-		_panel.add(facilityBox);
-		_panel.add(secondFacility);
-		_panel.add(secondfacilityBox);
-		_panel.add(thirdFacility);
-		_panel.add(thirdfacilityBox);
-		_panel.add(fourthFacility);
-		_panel.add(fourthfacilityBox);
-		*/
 		
 	}
 }

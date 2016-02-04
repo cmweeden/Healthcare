@@ -161,13 +161,17 @@ public class MainScreen implements ActionListener {
 		JMenu menuPolicy = new JMenu("Policy");
 		_menuBar.add(menuPolicy);
 
-		if (_login_type.equalsIgnoreCase("administrator")) {
+		if (_login_type.contains("Admin")) {
 			addPolicy = new JMenuItem("Add");
 			addPolicy.addActionListener(new PolicyDBScreen(_frame, _login_type, _location));
 			menuPolicy.add(addPolicy);
 			viewPolicy = new JMenuItem("View, Update, or Delete");
 			mappings = new JMenuItem("Mappings");
 			hierarchies = new JMenuItem("Hierarchy Assignments");
+			mappings.addActionListener(new MappingsScreen(_frame, _login_type, _location));
+			hierarchies.addActionListener(new HierarchyScreen(_frame, _login_type, _location));
+			menuPolicy.add(mappings);
+			menuPolicy.add(hierarchies);
 		} else {
 			viewPolicy = new JMenuItem("View");
 			mappings = new JMenuItem("Mappings");
@@ -175,11 +179,7 @@ public class MainScreen implements ActionListener {
 		}
 
 		viewPolicy.addActionListener(new PolicyDBScreen(_frame, _login_type, _location));
-		mappings.addActionListener(new MappingsScreen(_frame, _login_type, _location));
-		hierarchies.addActionListener(new HierarchyScreen(_frame, _login_type, _location));
 		menuPolicy.add(viewPolicy);
-		menuPolicy.add(mappings);
-		menuPolicy.add(hierarchies);
 
 		JMenu menuExternal = new JMenu("External");
 		_menuBar.add(menuExternal);

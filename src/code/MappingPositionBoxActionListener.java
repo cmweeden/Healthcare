@@ -9,7 +9,11 @@ import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-
+/*
+ * Class that is for the actionlistener for the login combo box on the left hand side of the mappings screen
+ * 
+ * 
+ */
 public class MappingPositionBoxActionListener implements ActionListener {
 	HashMap<String, Set<String>> _checkBoxMap;
 	MappingsComboBoxesListener _classWithCheckboxes;
@@ -28,12 +32,12 @@ public class MappingPositionBoxActionListener implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent e) {
 		_classWithCheckboxes.makeCheckBoxes(_facilitybox);
-		if (_checkBoxMap.containsKey(_logintypebox.getSelectedItem())){
+		if (_checkBoxMap.containsKey(_logintypebox.getSelectedItem() + " " + _facilitybox.getSelectedItem())){
 			// for value mapped to key
 				// set checkbox to be selected
-			for (int i =0; i<_checkBoxMap.get(_logintypebox.getSelectedItem()).size(); i++){
+			for (int i =0; i<_checkBoxMap.get(_logintypebox.getSelectedItem() + " " + _facilitybox.getSelectedItem()).size(); i++){
 				for (int j=0; j<_classWithCheckboxes._checkboxes.size(); j++){
-					if (_checkBoxMap.get(_logintypebox.getSelectedItem()).contains( _classWithCheckboxes._checkboxes.get(j).getText()) ){
+					if (_checkBoxMap.get(_logintypebox.getSelectedItem() + " " + _facilitybox.getSelectedItem() ).contains( _classWithCheckboxes._checkboxes.get(j).getText()) ){
 						_classWithCheckboxes._checkboxes.get(j).setSelected(true);
 					}
 				}

@@ -27,9 +27,6 @@ public class HierarchyScreen implements ActionListener {
 		height = 40;
 		width = 160;
 		_location = loc;
-		//_pol = false;
-		//_next = false;
-		//_backB = false;
 	}
 	public void actionPerformed(ActionEvent e) {
 		createFrame();
@@ -54,7 +51,6 @@ public class HierarchyScreen implements ActionListener {
 		facility.setBounds(x+125, y, width, height);
 		ArrayList<JComboBox> logintypeBoxArray = new ArrayList<JComboBox>();
 		ArrayList<String> selectedTable = Helper.getColumns("Policy_DB", _location.replaceAll("\\s",""), "Position");
-		System.out.println("SIZE OF TABLE IS: " + selectedTable.size());
 		//selectedTable.remove(0);
 		for (int i=0; i<selectedTable.size()-1; i++){
 			logintypeBoxArray.add(new JComboBox());
@@ -69,7 +65,7 @@ public class HierarchyScreen implements ActionListener {
 		}
 		_panel.add(facility);
 		_panel.add(facilityBox);
-		JButton submitButton = new JButton("Submit Hierarcy");
+		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new SubmitHierarchyListener(logintypeBoxArray, _location));
 		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
 		_panel.add(submitButton);
