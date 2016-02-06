@@ -38,10 +38,10 @@ public class MappingsComboBoxesListener implements ActionListener, ItemListener 
 	public void actionPerformed(ActionEvent e) {
 		JComboBox combo = (JComboBox)e.getSource();
         makeCheckBoxes(combo);
-        if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem())){
-			for (int i =0; i<_checkBoxHashMap.get(_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem()).size(); i++){
+        if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem())){
+			for (int i =0; i<_checkBoxHashMap.get(_loginTypeBox.getSelectedItem()).size(); i++){
 				for (int j=0; j<_checkboxes.size(); j++){
-					if (_checkBoxHashMap.get(_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem() ).contains( _checkboxes.get(j).getText()) ){
+					if (_checkBoxHashMap.get(_loginTypeBox.getSelectedItem() ).contains( _checkboxes.get(j).getText()+";"+ _FacilityBox.getSelectedItem()) ){
 						_checkboxes.get(j).setSelected(true);
 					}
 				}
@@ -75,15 +75,15 @@ public class MappingsComboBoxesListener implements ActionListener, ItemListener 
 			for (int i=0; i<_checkboxes.size(); i++){
 			 
 				if (source == _checkboxes.get(i)){
-					if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem())){
-						Set<String> temp = _checkBoxHashMap.get(_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem());
-						temp.add(_checkboxes.get(i).getText());
-						_checkBoxHashMap.put((String) (_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem()), temp);
+					if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem())){
+						Set<String> temp = _checkBoxHashMap.get(_loginTypeBox.getSelectedItem());
+						temp.add(_checkboxes.get(i).getText() +";"+ _FacilityBox.getSelectedItem());
+						_checkBoxHashMap.put((String) (_loginTypeBox.getSelectedItem()), temp);
 					}
 					else{
 						Set<String> hashValueArray = new TreeSet<String>();
-						hashValueArray.add(_checkboxes.get(i).getText());
-						_checkBoxHashMap.put((String) (_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem()), hashValueArray);
+						hashValueArray.add(_checkboxes.get(i).getText() +";"+ _FacilityBox.getSelectedItem());
+						_checkBoxHashMap.put((String) (_loginTypeBox.getSelectedItem()), hashValueArray);
 					}
 				}
 			}
@@ -94,14 +94,14 @@ public class MappingsComboBoxesListener implements ActionListener, ItemListener 
 			for (int i=0; i<_checkboxes.size(); i++){
 			 
 				if (source == _checkboxes.get(i)){
-					if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem())){
-						_checkBoxHashMap.get( _loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem()).remove( _checkboxes.get(i).getText() );
+					if (_checkBoxHashMap.containsKey(_loginTypeBox.getSelectedItem())){
+						_checkBoxHashMap.get( _loginTypeBox.getSelectedItem()).remove( _checkboxes.get(i).getText() +";"+ _FacilityBox.getSelectedItem() );
 					}
 				}
 			}
 		}
-		System.out.println( _loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem());
-		System.out.println(_checkBoxHashMap.get( _loginTypeBox.getSelectedItem() + " " + _FacilityBox.getSelectedItem()));
+		System.out.println( _loginTypeBox.getSelectedItem());
+		System.out.println(_checkBoxHashMap.get( _loginTypeBox.getSelectedItem()));
 	}
 	
 	

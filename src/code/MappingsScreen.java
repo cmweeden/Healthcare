@@ -55,8 +55,9 @@ public class MappingsScreen implements ActionListener{
 		int x = 10;
 		int y = 10;
 		System.out.println(_loc);
+		
 		JLabel facility = new JLabel("Your Facility is: " + _loc);
-		facility.setBounds(x, y, width+100, height);
+		facility.setBounds(x, y, width+200, height);
 		JLabel logintype = new JLabel("Role to map: ");
 		logintype.setBounds(x, y+50, width, height);
 		JComboBox logintypebox = new JComboBox();
@@ -66,23 +67,27 @@ public class MappingsScreen implements ActionListener{
 		for (int j=0; j<pids.size(); j++){
 			facilitybox.addItem(pids.get(j));
 		}
-		ArrayList<String> selectedTable = Helper.getColumns("Policy_DB", _loc, "Position");
+		ArrayList<String> selectedTable = Helper.getColumns("Policy_DB", _loc.replaceAll("\\s", ""), "Position");
 	        
 	        for (int j=0; j<selectedTable.size(); j++){
 	        	logintypebox.addItem(selectedTable.get(j));
 	        }
 	        
 		JButton submitButton = new JButton("Submit");
-		submitButton.addActionListener(new SubmitListener( checkBoxMap));
+		JButton deleteButton = new JButton("Reset Mappings");
+		submitButton.addActionListener(new SubmitListener( _panel,checkBoxMap, _loc));
 		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
 		MappingsComboBoxesListener classWithCheckBoxes = new MappingsComboBoxesListener(_panel,checkBoxMap,facilitybox, logintypebox, width, height);
 		facilitybox.addActionListener((ActionListener) classWithCheckBoxes);
 		logintypebox.addActionListener(new MappingPositionBoxActionListener(_panel, logintypebox, facilitybox, checkBoxMap, classWithCheckBoxes, _loc));
+		deleteButton.addActionListener(new MappingsResetButtonListener(facilitybox, checkBoxMap, classWithCheckBoxes, _loc ));
+		deleteButton.setBounds(x+50, y+30+30*4+30+50, width+90, height);
 		_panel.add(facilitybox);
 		_panel.add(facility);
 		_panel.add(submitButton);
 		_panel.add(logintype);
 		_panel.add(logintypebox);
+		_panel.add(deleteButton);
 		
 	}
 }

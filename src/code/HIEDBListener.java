@@ -8,11 +8,14 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -247,15 +250,14 @@ public class HIEDBListener implements ActionListener {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * FOR REFERENCE 2016 grads inherited this from the previous years, so we apologize for the monstrosity of code that they started.
+	 * But if you were looking for where encrypting and decrypting happens, yes this is the method that it is in. Encryption is in the import case, and decryption
+	 * is in the export case. 
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 
 		if (_action.equalsIgnoreCase("view")) {
-			if (_login_type.equalsIgnoreCase("Administrator")) {
+			if (_login_type.contains("Admin")) {
 
 				String where = addWhere((String) _pid.getSelectedItem(),
 						_first.getText(), _last.getText(), _birth.getText(),
@@ -477,29 +479,11 @@ public class HIEDBListener implements ActionListener {
 				ArrayList<String> val = db.select(wh, _login_type);
 				text = val.get(1);
 
-				// TODO save this for later, use for multiple key/policy.
-				// Difficult to implement
 				PolicyDatabase p_db = new PolicyDatabase();
 				wh = "X.PID= " + _pidS;
 				ArrayList<String> val1 = p_db.selectPol(wh, _login_type, tid);
-				// System.out.println(val1.get(1));
 
 				pol = val1.get(1);
-				// text += eol + "Date of Birth: " + _birth.getText();
-				// text += eol + "Insurance Provider: "
-				// + (String) _ins.getSelectedItem();
-
-				// if ((_login_type.equalsIgnoreCase("researcher"))) {
-				// ckey = "Blank for now";
-				//
-				// } else if ((_login_type.equals("Physician"))
-				// || (_login_type.equals("Insurance"))) {
-				// ckey = tid + " " + _docId + " " + _loc;
-				//
-				// } else {
-				// ckey = "Also blank for now";
-				//
-				// }
 				ckey = createXML(tid, _login_type, _loc);
 
 				byte[] key;
@@ -536,38 +520,9 @@ public class HIEDBListener implements ActionListener {
 				String where = "ID = " + tid;
 
 				hie.update(colvals, where);
-				// TODO Display Tid
-				// DataExportScreen screen = new DataExportScreen(_frame, _login_type,
-				// _loc, tid);
-				// screen.createFrame(3);
 				_error.setText("Data Exported with TID " + tid);
 
 			}
-
-			// //Display text blob
-			// JFrame frame = new JFrame("Patient Data");
-			// frame.setSize(350, 250);
-			// frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			// JPanel panel = new JPanel();
-			// JTextArea textbox = new JTextArea(text);
-			// panel.add(textbox);
-			// frame.add(panel);
-			// frame.setVisible(true);
-			// frame.pack();
-			// frame.setLocationRelativeTo(null);
-
-			// Solicit name for document via new screen pop up
-			// if ((_login_type.equals("physician")) || (_login_type.equals("insurance"))) {
-			// DocumentScreen dscreen = new DocumentScreen(_frame, _login_type,
-			// _docId, _loc, text);
-			// DocumentScreen.createFrame();
-			// } else {
-			// DocumentScreen dscreen = new DocumentScreen(_frame, _login_type, text);
-			// DocumentScreen.createFrame();
-			// }
-
-			// Query policy db for all policies concerning pid
-			// Attach policies as credentials to view
 
 		} else if (_action.equalsIgnoreCase("import")) {
 			String decryptionID = (String) _did.getSelectedItem();
@@ -580,9 +535,8 @@ public class HIEDBListener implements ActionListener {
 			String pol = array.get(3);
 			String ctext = array.get(4);
 			ArrayList<String> yourLocationTypes = new ArrayList<String>();
-			String sql = "SELECT " + _loc.replaceAll("\\s","") + " FROM MAPPINGS";
+			String sql = "SELECT " + "Position" + " FROM " +_loc.replaceAll("\\s","");
 			getPositionAtLocation(sql,yourLocationTypes);
-			System.out.println(yourLocationTypes);
 			String decryptedMessage = "Unable to decrypt";
 			InputSource source = new InputSource(new StringReader(ckey));
 			ArrayList<String> allLocations = new ArrayList<String>();
@@ -590,87 +544,70 @@ public class HIEDBListener implements ActionListener {
 			allLocations.add("InsuranceOffice");
 			allLocations.add("Hospital");
 			allLocations.add("Clinic");
-			/*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db;
-			String tempLocation = null;
-			//ArrayList<String>
-			try {
-				db = dbf.newDocumentBuilder();
-				Document document = db.parse(source);
-				XPathFactory xpathFactory = XPathFactory.newInstance();
-				XPath xpath = xpathFactory.newXPath();
-				tempLocation = xpath.evaluate("/KEY/COMMUNITY", document);
-			} catch (ParserConfigurationException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (XPathExpressionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			/*sql = "SELECT " + tempLocation.replaceAll("\\s","") + " FROM MAPPINGS";
-			ArrayList<String> theirLocationTypes = new ArrayList<String>();
-			getMappings(sql, theirLocationTypes);*/
+			
 			int roleIndex = 0;
+			// Because Java does not have tuples and I'm too lazy to make a struct.
+			ArrayList<String> functionReturnArray = new ArrayList<String>(2);
+			functionReturnArray.add("0");
+			functionReturnArray.add("0");
 			for(int i=0; i<yourLocationTypes.size();i++){
 				if (_login_type.equals(yourLocationTypes.get(i))){
 					roleIndex=i;
 				}
 			}
-			for(int i=0; i<allLocations.size(); i++){
-				sql = "SELECT " + allLocations.get(i) + " FROM MAPPINGS";
-				ArrayList<String> theirLocationTypes = new ArrayList<String>();
-				getPositionAtLocation(sql, theirLocationTypes);
-				for(int j=roleIndex; j<theirLocationTypes.size(); j++){
-					String role = theirLocationTypes.get(j);
-				
-					String dkey = createXML(Integer.valueOf(decryptionID), role, allLocations.get(i));
-					System.out.println(dkey);
-					byte[] key;
-					try {
-						key = (dkey).getBytes("UTF-8");
-
-						MessageDigest sha = MessageDigest.getInstance("SHA-1");
-						key = sha.digest(key);
-						key = Arrays.copyOf(key, 16); // use only first 128 bit
-
-						SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-						Cipher cipher = Cipher.getInstance("AES");
-
-						cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-						byte[] byteArray = Base64.decodeBase64(ctext.getBytes());
-
-						byte[] byteDecryptedText = cipher.doFinal(byteArray);
-
-						decryptedMessage = new String(byteDecryptedText);	
-						if (checkDecrypt(decryptedMessage)) {
-							break;
+			outerloop:
+			for(int i=roleIndex; i<yourLocationTypes.size(); i++){
+				if (checkIfTableExists(_loc.replaceAll("\\s","") + "Mappings")){
+					functionReturnArray = AttemptToDecrypt(yourLocationTypes.get(i), _loc.replaceAll("\\s", ""), decryptionID, decryptedMessage, ctext,functionReturnArray);
+					decryptedMessage = functionReturnArray.get(1);
+					if(functionReturnArray.get(0)=="1"){
+						break;
+					}
+					if (!checkIfColumnExists(yourLocationTypes.get(i).replaceAll("\\s",""),(_loc.replaceAll("\\s","") + "Mappings"))){
+						continue;
+					}
+					sql = "SELECT " + yourLocationTypes.get(i).replaceAll("\\s","") + " FROM " + _loc.replaceAll("\\s","") + "Mappings";
+					ArrayList<String> equivPolicyTypes = new ArrayList<String>();
+					getPositionAtLocation(sql, equivPolicyTypes);
+					System.out.println(equivPolicyTypes);
+					for(int j=0; j<equivPolicyTypes.size(); j++){
+						String role = equivPolicyTypes.get(j);
+						if (role == "null" || role == null || role == "NULL"){
+							continue;
+						}
+						String[] temp = role.split(";");
+						role = temp[0];
+						String location = temp[1];
+						functionReturnArray = AttemptToDecrypt(role, location, decryptionID, decryptedMessage, ctext,functionReturnArray);
+						decryptedMessage = functionReturnArray.get(1);
+						if(functionReturnArray.get(0)=="1"){
+							break outerloop;
+						}
+						sql = "SELECT Position FROM " + location.replaceAll("\\s", "");
+						ArrayList<String> lowerLevelPolicies = new ArrayList<String>();
+						getPositionAtLocation(sql, lowerLevelPolicies);
+						int index = lowerLevelPolicies.indexOf(role);
+						for(int k=index; k<lowerLevelPolicies.size(); k++){
+							functionReturnArray = AttemptToDecrypt(lowerLevelPolicies.get(k), location, decryptionID, decryptedMessage, ctext,functionReturnArray);
+							decryptedMessage = functionReturnArray.get(1);
+							if(functionReturnArray.get(0)=="1"){
+								break outerloop;
+							}
 						}
 
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					} catch (NoSuchAlgorithmException e) {
-						e.printStackTrace();
-					} catch (IllegalBlockSizeException e) {
-						e.printStackTrace();
-					} catch (BadPaddingException e) {
-						e.printStackTrace();
-					} catch (InvalidKeyException e) {
-						e.printStackTrace();
-					} catch (NoSuchPaddingException e) {
-						e.printStackTrace();
 					}
 				}
+				else{
+					functionReturnArray = AttemptToDecrypt(yourLocationTypes.get(i), _loc.replaceAll("\\s", ""), decryptionID, decryptedMessage, ctext,functionReturnArray);
+					decryptedMessage = functionReturnArray.get(1);
+					if(functionReturnArray.get(0)=="1"){
+						break;
+					}
+				}
+				
 			}
-			// decrypt
 			String message;
 			String eol = System.getProperty("line.separator");
-
 			if (checkDecrypt(decryptedMessage)) {
 				message = decryptedMessage;
 			}
@@ -718,11 +655,98 @@ public class HIEDBListener implements ActionListener {
 		}
 
 	}
+	private ArrayList<String> AttemptToDecrypt(String role, String location, String decryptionID, String decryptedMessage, String ctext, ArrayList<String> functionReturnArray){
+		String dkey = createXML(Integer.valueOf(decryptionID), role, location);
+		System.out.println(dkey);
+		byte[] key;
+		try {
+			key = (dkey).getBytes("UTF-8");
 
-	/**
-	 * @param message
-	 * @return
-	 */
+			MessageDigest sha = MessageDigest.getInstance("SHA-1");
+			
+			key = sha.digest(key);
+			key = Arrays.copyOf(key, 16); // use only first 128 bit
+
+			SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+			Cipher cipher = Cipher.getInstance("AES");
+
+			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+			byte[] byteArray = Base64.decodeBase64(ctext.getBytes());
+
+			byte[] byteDecryptedText = cipher.doFinal(byteArray);
+
+			decryptedMessage = new String(byteDecryptedText);	
+			if (checkDecrypt(decryptedMessage)) {
+				functionReturnArray.set(0, "1");
+				functionReturnArray.set(1, decryptedMessage);
+				return functionReturnArray;
+			}
+
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("");
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("");
+		} catch (IllegalBlockSizeException e) {
+			System.out.println("");
+		} catch (BadPaddingException e) {
+			System.out.println("");
+		} catch (InvalidKeyException e) {
+			System.out.println("");
+		} catch (NoSuchPaddingException e) {
+			System.out.println("");
+		}
+		functionReturnArray.set(0, "0");
+		functionReturnArray.set(1, decryptedMessage);
+		return functionReturnArray;
+	}
+	private boolean checkIfTableExists(String table){
+		Connection connection = null;
+		try{
+			connection = DriverManager
+				.getConnection("jdbc:sqlite:Policy_DB.db");
+			connection.setAutoCommit(false);
+		
+			DatabaseMetaData md = connection.getMetaData();
+			ResultSet rs = md.getColumns(null, null, table, null);
+			if (rs.next()) {
+			      connection.close();
+			      return true;
+			 }
+			else{
+				connection.close();
+				return false;
+			}
+			
+			
+		}catch (Exception e1) {
+			System.out.println("Error" + e1.getMessage());
+			return false;
+		}
+	}
+	private boolean checkIfColumnExists(String column, String table){
+		Connection connection = null;
+		try{
+			connection = DriverManager
+				.getConnection("jdbc:sqlite:Policy_DB.db");
+			connection.setAutoCommit(false);
+		
+			DatabaseMetaData md = connection.getMetaData();
+			ResultSet rs = md.getColumns(null, null, table, column);
+			if (rs.next()) {
+			      connection.close();
+			      return true;
+			 }
+			else{
+				connection.close();
+				return false;
+			}
+			
+			
+		}catch (Exception e1) {
+			System.out.println("Error" + e1.getMessage());
+			return false;
+		}
+	}
 	private boolean checkDecrypt(String message) {
 		if (message.startsWith("<XML>")) {
 			System.out.println("Decrypted: " + message);

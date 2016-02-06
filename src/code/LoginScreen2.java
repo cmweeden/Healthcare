@@ -128,6 +128,8 @@ public class LoginScreen2 implements ActionListener {
 		for (int i = 0; i < type.size(); i++) {
 			ldb.addItem(type.get(i));
 		}
+		JComboBox idb = new JComboBox();
+		ldb.addActionListener((ActionListener) new LocationComboBoxListener(idb, panel));
 		ldb.setBounds(x2, y, width + 50, height);
 		panel.add(ldb);
 
@@ -137,12 +139,11 @@ public class LoginScreen2 implements ActionListener {
 		uType.setBounds(x, y, width, height);
 		panel.add(uType);
 
-		JComboBox idb = new JComboBox();
-		ArrayList<String> type2 = Helper.getColumns("Policy_DB", "TYPES",
+		/*ArrayList<String> type2 = Helper.getColumns("Policy_DB", "TYPES",
 				"TYPE");
 		for (int i = 0; i < type2.size(); i++) {
 			idb.addItem(type2.get(i));
-		}
+		}*/
 		idb.setBounds(x2, y, width + 50, height);
 		panel.add(idb);
 
