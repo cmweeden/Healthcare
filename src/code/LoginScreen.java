@@ -1,10 +1,16 @@
 package code;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -83,6 +89,21 @@ public class LoginScreen {
 	 */
 	public static void placeComponents(ImagePanel panel) {
 		panel.setLayout(null);
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-23, 150, 76);			
+			panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
 
 		int x = 10;
 		int x2 = 180;
@@ -151,6 +172,8 @@ public class LoginScreen {
 				(JTextField) pText, _frame, error));
 		_frame.getRootPane().setDefaultButton(submit);
 		panel.add(submit);
+		
+
 
 	}
 

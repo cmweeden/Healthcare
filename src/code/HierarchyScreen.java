@@ -1,9 +1,15 @@
 package code;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -69,5 +75,19 @@ public class HierarchyScreen implements ActionListener {
 		submitButton.addActionListener(new SubmitHierarchyListener(logintypeBoxArray, _location));
 		submitButton.setBounds(x+50, y+30+30*4+30, width, height);
 		_panel.add(submitButton);
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-50, 150, 76);			
+			_panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

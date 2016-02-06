@@ -1,10 +1,17 @@
 package code;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -111,6 +118,21 @@ public class AboutScreen implements ActionListener {
 		scrollPane.setBounds(x, y, width * 3, height * 5);
 
 		_panel.add(scrollPane);
+		
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-50, 150, 76);			
+			_panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 }

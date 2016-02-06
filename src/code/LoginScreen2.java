@@ -1,13 +1,20 @@
 package code;
 
+import java.awt.Rectangle;
+
 //Reuse frame created in Login Screen
 // This second LoginScreen allows creation and retention of menu bars
 
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -180,6 +187,20 @@ public class LoginScreen2 implements ActionListener {
 				(JTextField) pText, _frame, error));
 		_frame.getRootPane().setDefaultButton(submit);
 		panel.add(submit);
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-50, 150, 76);			
+			panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 

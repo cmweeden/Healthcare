@@ -1,6 +1,7 @@
 package code;
 
 import java.awt.FlowLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -432,6 +434,20 @@ public class DataExportScreen implements ActionListener {
 	 */
 	public void addComponents() {
 		_panel.setLayout(null);
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-50, 150, 76);			
+			_panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		int x = 10;
 		int y = 10;
@@ -662,6 +678,8 @@ public class DataExportScreen implements ActionListener {
 		submit.addActionListener(new DataExportScreen(_frame, _login_type, _loc));
 		_frame.getRootPane().setDefaultButton(submit);
 		_panel.add(submit);
+		
+
 
 	}
 

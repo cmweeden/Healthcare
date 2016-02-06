@@ -1,11 +1,17 @@
 package code;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -88,6 +94,20 @@ public class MappingsScreen implements ActionListener{
 		_panel.add(logintype);
 		_panel.add(logintypebox);
 		_panel.add(deleteButton);
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-50, 150, 76);			
+			_panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 }

@@ -1,9 +1,15 @@
 package code;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -84,7 +90,27 @@ public class MainScreen implements ActionListener {
 	 * @param panel
 	 */
 	public void addComponents(ImagePanel panel) {
+		
+	
+		
+		
 		panel.setLayout(null);
+		
+		Rectangle r = _frame.getBounds();
+		int h = r.height;
+		int w = r.width;
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("resources/logo.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			picLabel.setBounds(w/2-75,h-76-50, 150, 76);			
+			panel.add(picLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 
 		int x = 10;
 		int x2 = 180;
@@ -101,6 +127,8 @@ public class MainScreen implements ActionListener {
 		Font labelFont = label2.getFont();
 		label2.setFont(new Font(labelFont.getName(), Font.ITALIC, 30));
 		panel.add(label2);
+		
+
 
 	}
 
