@@ -539,11 +539,14 @@ public class HIEDBListener implements ActionListener {
 			getPositionAtLocation(sql,yourLocationTypes);
 			String decryptedMessage = "Unable to decrypt";
 			InputSource source = new InputSource(new StringReader(ckey));
-			ArrayList<String> allLocations = new ArrayList<String>();
-			allLocations.add("ResearchFacility");
+			ArrayList<String> allLocations = Helper.getColumns("Policy_DB", "LOCATIONS",
+					"LOCATION");
+			//ArrayList<String> allLocations = new ArrayList<String>();
+			
+			/*allLocations.add("ResearchFacility");
 			allLocations.add("InsuranceOffice");
 			allLocations.add("Hospital");
-			allLocations.add("Clinic");
+			allLocations.add("Clinic");*/
 			
 			int roleIndex = 0;
 			// Because Java does not have tuples and I'm too lazy to make a struct.
